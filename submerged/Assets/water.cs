@@ -17,12 +17,17 @@ public class water : MonoBehaviour
     private Vector3 reducedGravity = new Vector3(0, -1, 0);
     public List<GameObject> objectsInside = new List<GameObject>();
     public AudioClip waterSound; // Sound to play when entering water
-    private AudioSource audioSource; // Audio source component
+    public AudioSource audioSourceOneShots; // Audio source component
+    public AudioSource audioSourceAmbience;
+    public AudioClip waterSplash;
+    public AudioClip waterExit;
+    private bool waterSplashHasPlayed = false; // Flag to track if the splash sound has been played
+    private bool waterExitHasPlayed = false; // Flag to track if the exit sound has been played
     public void Start()
     {
         Physics.gravity = originalGravity;
-        audioSource = GetComponent<AudioSource>();
-        audioSource.clip = waterSound;
+        audioSourceAmbience.clip = waterSound;
+        
     }
     public void Update()
     {
@@ -30,7 +35,7 @@ public class water : MonoBehaviour
         {
             print("buoyancy applied");
             timer1 += Time.deltaTime;
-            if (!audioSource.isPlaying) audioSource.Play();
+            if (!audioSourceAmbience.isPlaying) audioSourceAmbience.Play();
         }
     }
     public void OnTriggerEnter(Collider other)
@@ -40,6 +45,13 @@ public class water : MonoBehaviour
             objectsInside.Add(other.gameObject);
             Physics.gravity = reducedGravity; // Reduce gravity by half
             inWater = true;
+            if (!waterSplashHasPlayed)
+            {
+                Debug.Log("Playing splash sound");
+                audioSourceOneShots.PlayOneShot(waterSplash); // Play splash sound when entering water
+                waterSplashHasPlayed = true;
+            }
+            waterExitHasPlayed = false; // Reset exit sound flag when entering water
 
         }
     }
@@ -51,8 +63,14 @@ public class water : MonoBehaviour
             inWater = false;
             Physics.gravity = originalGravity; // Reset gravity when not in water
             timer1 = 0f;
-            audioSource.Stop();
-
+            if (!waterExitHasPlayed)
+            {
+                Debug.Log("Playing exit sound");
+                audioSourceOneShots.PlayOneShot(waterExit); // Play exit sound when leaving water
+                waterExitHasPlayed = true;
+            }
+            waterSplashHasPlayed = false; // Reset splash sound flag when exiting water
+            audioSourceAmbience.Stop();
         }
     }
 }

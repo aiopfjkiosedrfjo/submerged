@@ -46,7 +46,7 @@ public class cameraDetection : MonoBehaviour
     }
     void savePhoto()
     {
-        Texture2D image = new Texture2D(LastImage.width, LastImage.height, TextureFormat.RGBA32, false);
+        Texture2D image = new Texture2D(LastImage.width, LastImage.height, TextureFormat.RGBAHalf, false);
         RenderTexture.active = LastImage;
         image.ReadPixels(new Rect(0, 0, LastImage.width, LastImage.height), 0, 0);
         image.Apply();
