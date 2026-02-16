@@ -39,7 +39,7 @@ public class water : MonoBehaviour
     }
     public void OnTriggerEnter(Collider other)
     {
-        if (!objectsInside.Contains(other.gameObject))
+        if (!objectsInside.Contains(other.gameObject) && other.gameObject.CompareTag("Player")) // Check if the object is not already inside and has the "Player" tag
         {
             objectsInside.Add(other.gameObject);
             Physics.gravity = reducedGravity; // Reduce gravity by half
