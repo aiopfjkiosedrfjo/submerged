@@ -77,5 +77,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d1fce3852dbe5f47bdbf8b65f2270ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::flock
-  minimumspeed: 2
-  maximumspeed: 4
+  minimumspeed: 10
+  maximumspeed: 20
+  debugSpeed: 0

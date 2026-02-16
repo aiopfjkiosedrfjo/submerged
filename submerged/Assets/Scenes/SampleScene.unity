@@ -9672,7 +9672,7 @@ Transform:
   m_GameObject: {fileID: 1193800166}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -16.4, y: -93.99, z: 24}
+  m_LocalPosition: {x: -11.39, y: -100.32, z: 13.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9691,6 +9691,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   fishPrefab: {fileID: 5585143470630337102, guid: ea3a72fe0f6451a45b78e27ba646b4bf, type: 3}
+  tankSize: 10
 --- !u!1 &1300252017
 GameObject:
   m_ObjectHideFlags: 0
