@@ -33,7 +33,6 @@ public class water : MonoBehaviour
     {
         if (inWater)
         {
-            print("buoyancy applied");
             timer1 += Time.deltaTime;
             if (!audioSourceAmbience.isPlaying) audioSourceAmbience.Play();
         }
