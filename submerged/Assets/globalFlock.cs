@@ -3,16 +3,19 @@ using UnityEngine;
 public class globalFlock : MonoBehaviour
 {
     public GameObject fishPrefab;
-    public int tankSize = 5;
-    static public int numFish = 20;
+    public static int tankSize = 10;
+    static public int numFish = 10;
     public static GameObject[] allFish = new GameObject[numFish];
     public static Vector3 goalpos = Vector3.zero;
+    public static Vector3 tankCenter;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        tankCenter = transform.position;
         for (int i = 0; i < numFish; i++)
         {
-            Vector3 pos = transform.position + new Vector3(Random.Range(-tankSize, tankSize)
+            Vector3 pos = tankCenter + new Vector3(Random.Range(-tankSize, tankSize)
                                                     , Random.Range(-tankSize, tankSize)
                                                     , Random.Range(-tankSize, tankSize));
 
@@ -26,7 +29,7 @@ public class globalFlock : MonoBehaviour
     {
         if(Random.Range(0, 10000) < 50)
         {
-            goalpos = transform.position + new Vector3(Random.Range(-tankSize, tankSize)
+            goalpos = tankCenter + new Vector3(Random.Range(-tankSize, tankSize)
                                         , Random.Range(-tankSize, tankSize)
                                         , Random.Range(-tankSize, tankSize));
         }

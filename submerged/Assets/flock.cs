@@ -1,3 +1,6 @@
+using System.ComponentModel.Design;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class flock : MonoBehaviour
@@ -5,9 +8,10 @@ public class flock : MonoBehaviour
     float speed;
     public float minimumspeed = 2f;
     public float maximumspeed = 4f;
-    float rotationSpeed = 4.0f;
-    float neighbourDistance = 6.0f;
-    public float debugSpeed;
+    public float rotationSpeed = 4.0f;
+    public float neighbourDistance = 6.0f;
+    float speedChangeTimer;
+    bool turning = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -15,20 +19,41 @@ public class flock : MonoBehaviour
     }
 
     // Update is called once per frame
+
+
     void Update()
     {
-        if (Random.Range(0,5) < 1)
+        if (Vector3.Distance(transform.position, globalFlock.tankCenter) >= globalFlock.tankSize)
         {
-            ApplyRules();
+            turning = true;
         }
-        if (Random.Range(0, 100) < 10)
+        else
+        {
+            turning = false;
+        }
+        if (turning)
+        {
+            Vector3 direction = globalFlock.tankCenter - transform.position;
+            transform.rotation = Quaternion.Slerp(transform.rotation,
+                Quaternion.LookRotation(direction),
+                rotationSpeed * Time.deltaTime);
+            speed = Random.Range(minimumspeed, maximumspeed);
+        }
+        else
+        {
+            if (Random.Range(0, 100) < 10)
+            {
+                ApplyRules();
+            }
+        }
+
+        speedChangeTimer -= Time.deltaTime;
+        if (speedChangeTimer <= 0f)
         {
             speed = Random.Range(minimumspeed, maximumspeed);
-            
+            speedChangeTimer = Random.Range(1f, 3f); // change every 1–3 seconds
         }
         transform.Translate(0, 0, Time.deltaTime * speed);
-        debugSpeed = Time.deltaTime * speed;
-        Debug.Log(debugSpeed);
     }
     void ApplyRules()
     {
@@ -66,7 +91,7 @@ public class flock : MonoBehaviour
             speed = gSpeed / groupSize;
 
             Vector3 direction = vcentre + vavoid - transform.position;
-            if (direction != Vector3.zero)
+            if (direction != globalFlock.tankCenter - transform.position)
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation,
                     Quaternion.LookRotation(direction),
