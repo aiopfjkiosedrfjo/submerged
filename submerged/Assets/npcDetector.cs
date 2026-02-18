@@ -16,6 +16,7 @@ public class npcDetector : MonoBehaviour
     public npcCanvasPairs[] npcCanvasArray;
     private GameObject targettedNPC;
     public LayerMask anchorLayer;
+    public bool UIENABLED = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void OnTriggerEnter(Collider other)
     {
@@ -55,23 +56,51 @@ public class npcDetector : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && interactable)
+    if (Input.GetKeyDown(KeyCode.E))
+    {
+        if (uiManager.Instance.uiCanvas.enabled || 
+            uiManager.Instance.traderUICanvas.enabled)
+        {
+            uiManager.Instance.closeAllUI();
+            UIENABLED = false;
+        }
+        else if (interactable)
         {
             ShowCanvasForNPC(targettedNPC);
+            UIENABLED = true;
         }
+        else
+        {
+            uiManager.Instance.openInventoryUI();
+            UIENABLED = true;
+        }
+    }
+
     }
     public void ShowCanvasForNPC(GameObject npc)
     {
+        bool foundNPC = false;
         foreach (var pair in npcCanvasArray)
         {
             if (pair.npc == npc)
             {
                 pair.npcCanvas.enabled = true;
+                foundNPC = true;
             }
             else
             {
                 pair.npcCanvas.enabled = false;
             }
+        }
+        if (foundNPC)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
     }
 

@@ -11,36 +11,39 @@ public class uiManager : MonoBehaviour
     public TextMeshProUGUI npcDisplay;
     public npcDetector npcDetector;
     public cameraDetection cameraDetection;
+    public static uiManager Instance;
+    public Canvas onScreenConstantUI;
     void Start()
     {
+        Instance = this;
         uiCanvas.enabled = false;
         traderUICanvas.enabled = false;
     }
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E) && uiCanvas.enabled)
-        {
-            uiCanvas.enabled = false;
-        }
-        else if (Input.GetKeyDown(KeyCode.E) && !uiCanvas.enabled)
-        {
-            uiCanvas.enabled = true;
-            updateCashDisplay();
-        }
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            gameManager.instance.UpdateCash(50);
-            updateCashDisplay();
-        }
-        if (npcDetector.interactable)
-        {
-            npcDisplay.enabled = true;
-        }
-        else
-        {
-            npcDisplay.enabled = false;
-        }
 
+    public void showInteractUI()
+    {
+        npcDisplay.text = "Press E to interact";
+    }
+    public void hideInteractUI()
+    {
+        npcDisplay.text = "";
+    }
+    public void closeAllUI()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        traderUICanvas.enabled = false;
+        uiCanvas.enabled = false;
+    }
+    public void openInventoryUI()
+    {
+        uiCanvas.enabled = true;
+    }
+    public void closeInventoryUI()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        uiCanvas.enabled = false;
     }
     public void sellPhotos()
     {
@@ -52,10 +55,7 @@ public class uiManager : MonoBehaviour
                 img.sprite = null; // Clear the image display
             }
         }
-        foreach (Renderer rend in cameraDetection.photoTargets)
-        {
-            rend.gameObject.SetActive(true); // Reactivate the photo targets
-        }
+
         updateCashDisplay();
     }
     public void closeTraderUI()

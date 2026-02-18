@@ -10,6 +10,7 @@ public class cameraDetection : MonoBehaviour
     public RenderTexture LastImage;
     public Renderer[] photoTargets;
     public Image[] imageDisplay;
+    public LayerMask targetLayer;
     public Animator animator;
     private int fishCount = 0;
     
@@ -33,14 +34,18 @@ public class cameraDetection : MonoBehaviour
 
 
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(photoCamera);
-        foreach (Renderer rend in photoTargets)
+        foreach (GameObject game in globalFlock.allFish)
         {
+            
+            Renderer rend = game.GetComponentInChildren<SkinnedMeshRenderer>();
             if (isInView(planes, rend))
             {
-                rend.gameObject.SetActive(false);
-                fishCount++;
-                savePhoto();
-
+                if (((1 << rend.gameObject.layer) & targetLayer) != 0)
+                {
+                    game.SetActive(false);
+                    fishCount++;
+                    savePhoto();
+                }
             }
         }
     }
