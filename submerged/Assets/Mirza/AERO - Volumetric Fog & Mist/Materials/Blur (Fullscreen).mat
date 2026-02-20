@@ -132,9 +132,9 @@ Material:
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
-    - _Quality: 18
+    - _Quality: 16
     - _QueueOffset: 0
-    - _Radius: 0.1
+    - _Radius: 0.531
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0

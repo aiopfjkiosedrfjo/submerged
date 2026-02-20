@@ -56,26 +56,34 @@ public class npcDetector : MonoBehaviour
     }
     void Update()
     {
-    if (Input.GetKeyDown(KeyCode.E))
-    {
-        if (uiManager.Instance.uiCanvas.enabled || 
-            uiManager.Instance.traderUICanvas.enabled)
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            uiManager.Instance.closeAllUI();
-            UIENABLED = false;
+            if (uiManager.Instance.uiCanvas.enabled || 
+                uiManager.Instance.traderUICanvas.enabled)
+            {
+                uiManager.Instance.closeAllUI();
+                UIENABLED = false;
+            }
+            else if (interactable)
+            {
+                ShowCanvasForNPC(targettedNPC);
+                UIENABLED = true;
+            }
+            else
+            {
+                uiManager.Instance.openInventoryUI();
+                UIENABLED = true;
+            }
         }
-        else if (interactable)
+        if (interactable && !UIENABLED)
         {
-            ShowCanvasForNPC(targettedNPC);
-            UIENABLED = true;
+            uiManager.Instance.showInteractUI();
         }
         else
         {
-            uiManager.Instance.openInventoryUI();
-            UIENABLED = true;
-        }
-    }
+            uiManager.Instance.hideInteractUI();
 
+        }
     }
     public void ShowCanvasForNPC(GameObject npc)
     {

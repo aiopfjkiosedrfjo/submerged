@@ -3,8 +3,8 @@ using UnityEngine;
 public class globalFlock : MonoBehaviour
 {
     public GameObject fishPrefab;
-    public static int tankSize = 10;
-    static public int numFish = 10;
+    public static int tankSize = 20;
+    static public int numFish = 20;
     public static GameObject[] allFish = new GameObject[numFish];
     public static Vector3 goalpos = Vector3.zero;
     public static Vector3 tankCenter;
@@ -13,15 +13,7 @@ public class globalFlock : MonoBehaviour
     void Start()
     {
         tankCenter = transform.position;
-        for (int i = 0; i < numFish; i++)
-        {
-            Vector3 pos = tankCenter + new Vector3(Random.Range(-tankSize, tankSize)
-                                                    , Random.Range(-tankSize, tankSize)
-                                                    , Random.Range(-tankSize, tankSize));
-
-            allFish[i] = Instantiate(fishPrefab, pos, Quaternion.identity);
-        }
-        
+        createFish();
     }
 
     // Update is called once per frame
@@ -33,5 +25,17 @@ public class globalFlock : MonoBehaviour
                                         , Random.Range(-tankSize, tankSize)
                                         , Random.Range(-tankSize, tankSize));
         }
+    }
+    public void createFish()
+    {
+        for (int i = 0; i < numFish; i++)
+        {
+            Vector3 pos = tankCenter + new Vector3(Random.Range(-tankSize, tankSize)
+                                                    , Random.Range(-tankSize, tankSize)
+                                                    , Random.Range(-tankSize, tankSize));
+
+            allFish[i] = Instantiate(fishPrefab, pos, Quaternion.identity);
+        }
+        
     }
 }
