@@ -1,3 +1,4 @@
+using System.Collections;
 using System.ComponentModel.Design;
 using Unity.VisualScripting;
 using UnityEditor;
@@ -12,10 +13,18 @@ public class flock : MonoBehaviour
     public float neighbourDistance = 6.0f;
     float speedChangeTimer;
     bool turning = false;
+    public sanityLevelEvents sanityLevelEventManager;
+    public GameObject player;
+    bool AllFishLookingAtPlayerTriggered = false;
+    public bool lookingAtPlayer = false;
+    public globalFlock globalFlockScript;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         speed = Random.Range(minimumspeed, maximumspeed);
+        sanityLevelEventManager = FindFirstObjectByType<sanityLevelEvents>();
+        player = FindFirstObjectByType<Player>().gameObject;
+        globalFlockScript = FindFirstObjectByType<globalFlock>();
     }
 
     // Update is called once per frame
@@ -23,6 +32,13 @@ public class flock : MonoBehaviour
 
     void Update()
     {
+        if (sanityLevelEventManager.FishAllLookAtPlayer && !AllFishLookingAtPlayerTriggered)
+        {
+            Debug.Log("All fish looking at player triggered");
+            AllFishLookingAtPlayerTriggered = true;
+            StartCoroutine(AllFishLookAtPlayer());
+
+        }
         if (Vector3.Distance(transform.position, globalFlock.tankCenter) >= globalFlock.tankSize)
         {
             turning = true;
@@ -46,14 +62,16 @@ public class flock : MonoBehaviour
                 ApplyRules();
             }
         }
-
-        speedChangeTimer -= Time.deltaTime;
-        if (speedChangeTimer <= 0f)
+        if (!lookingAtPlayer)
         {
-            speed = Random.Range(minimumspeed, maximumspeed);
-            speedChangeTimer = Random.Range(1f, 3f); // change every 1–3 seconds
+            speedChangeTimer -= Time.deltaTime;
+            if (speedChangeTimer <= 0f)
+            {
+                speed = Random.Range(minimumspeed, maximumspeed);
+                speedChangeTimer = Random.Range(1f, 3f); // change every 1–3 seconds
+            }
+            transform.Translate(0, 0, Time.deltaTime * speed);
         }
-        transform.Translate(0, 0, Time.deltaTime * speed);
     }
     void ApplyRules()
     {
@@ -98,5 +116,20 @@ public class flock : MonoBehaviour
                     rotationSpeed * Time.deltaTime);
             }
         }
+    }
+    
+    IEnumerator AllFishLookAtPlayer()
+    {
+        float timer = 0f;
+        lookingAtPlayer = true;
+        Vector3 targetDir = (player.transform.position - transform.position).normalized;
+        while (timer < 2f)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(targetDir), rotationSpeed * Time.deltaTime*2);
+            timer += Time.deltaTime;
+            yield return null; // wait for next frame
+        }
+        lookingAtPlayer = false;
+        ApplyRules();
     }
 }

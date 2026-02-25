@@ -6,6 +6,7 @@ public class gameManager : MonoBehaviour
     public uiManager uiManager;
     public int playerCash = 0;
     public int multiplierIncrease = 0;
+    public float sanityLevel = 100f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {

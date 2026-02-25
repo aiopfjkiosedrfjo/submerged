@@ -37,7 +37,17 @@ public class water : MonoBehaviour
             timer1 += Time.deltaTime;
             if (!audioSourceAmbience.isPlaying) audioSourceAmbience.Play();
         }
+        CheckSanityMeter();
     }
+    public void CheckSanityMeter()
+    {
+        if (inWater)
+        {
+            gameManager.instance.sanityLevel -= Time.deltaTime / 5f;
+            Debug.Log("Sanity Level: " + gameManager.instance.sanityLevel);
+        }
+    }
+
     public void OnTriggerEnter(Collider other)
     {
         if (!objectsInside.Contains(other.gameObject) && other.gameObject.CompareTag("Player")) 
