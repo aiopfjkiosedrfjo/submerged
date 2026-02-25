@@ -1,7 +1,6 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using Unity.Multiplayer.Center.Common.Analytics;
 
 public class uiManager : MonoBehaviour
 {
@@ -13,6 +12,7 @@ public class uiManager : MonoBehaviour
     public cameraDetection cameraDetection;
     public static uiManager Instance;
     public Canvas onScreenConstantUI;
+    public float cashToBeUpdated;
     void Start()
     {
         Instance = this;
@@ -47,15 +47,21 @@ public class uiManager : MonoBehaviour
     }
     public void sellPhotos()
     {
-        foreach (Image img in cameraDetection.imageDisplay)
+        foreach (cameraDetection.PhotoData data in cameraDetection.photoDataList)
         {
-            if (img.sprite != null)
+            foreach (Image img in cameraDetection.imageDisplay)
             {
-                gameManager.instance.UpdateCash(10); // Sell each photo for 10 cash
-                img.sprite = null; // Clear the image display
+                if (img.sprite != null)
+                {
+                    cashToBeUpdated = (data.multiplierIncrease/100f)+1;
+                    cashToBeUpdated *= 10;
+                    gameManager.instance.UpdateCash((int)cashToBeUpdated); 
+                    img.sprite = null; 
+                }
             }
         }
-
+        cameraDetection.photoDataList.Clear();
+        cameraDetection.count = 0;
         updateCashDisplay();
     }
     public void closeTraderUI()
@@ -68,7 +74,6 @@ public class uiManager : MonoBehaviour
     {
         if (cashDisplay != null)
         {
-            // Assuming there's a GameManager class that holds the player's cash
             int playerCash = gameManager.instance.playerCash;
             cashDisplay.text = playerCash.ToString();
         }

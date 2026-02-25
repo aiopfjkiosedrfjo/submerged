@@ -5,10 +5,11 @@ public class gameManager : MonoBehaviour
     public static gameManager instance;
     public uiManager uiManager;
     public int playerCash = 0;
+    public int multiplierIncrease = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        playerCash = 100;   // Starting cash
+        playerCash = 100;   
         if (instance != null && instance != this)
         {
             Destroy(gameObject);
@@ -23,5 +24,17 @@ public class gameManager : MonoBehaviour
     {
         playerCash += amount;
         uiManager.updateCashDisplay();
+    }
+    public int AddMultiplier(float distanceFromCamera)
+    {
+        multiplierIncrease = GetDistanceMultiplier(distanceFromCamera);
+        return multiplierIncrease;
+    }
+    int GetDistanceMultiplier(float distanceFromCamera)
+    {
+        if (distanceFromCamera < 2) return 30;
+        if (distanceFromCamera < 5) return 20;
+        if (distanceFromCamera < 10) return 10;
+        return 0;
     }
 }

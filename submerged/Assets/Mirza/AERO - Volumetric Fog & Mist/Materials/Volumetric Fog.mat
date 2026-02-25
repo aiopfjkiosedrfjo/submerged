@@ -102,8 +102,8 @@ Material:
     - _AddPrecomputedVelocity: 0
     - _AlphaClip: 0
     - _AlphaToMask: 0
-    - _Anisotropy: 1
-    - _Anisotropy_Blend: 1
+    - _Anisotropy: 0.8
+    - _Anisotropy_Blend: 0.5
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
@@ -111,7 +111,7 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
-    - _Density: 0.034
+    - _Density: 0.1
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -123,7 +123,7 @@ Material:
     - _INTERNAL_ADDITIONAL_LIGHT_SHADOWS: 1
     - _INTERNAL_MAIN_LIGHT_SHADOWS: 1
     - _MAIN_LIGHT: 1
-    - _Max_Distance: 16.02
+    - _Max_Distance: 55.2
     - _Metallic: 0
     - _OUTPUT: 0
     - _OcclusionStrength: 1
@@ -133,14 +133,14 @@ Material:
     - _Remap_Max: 1
     - _Remap_Min: 0
     - _SHADOWS: 1
-    - _Scattering_Remap_Max: 0.343
-    - _Scattering_Remap_Min: 0.15
+    - _Scattering_Remap_Max: 1
+    - _Scattering_Remap_Min: 0.575
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
-    - _Steps: 3
+    - _Steps: 16
     - _Surface: 0
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
