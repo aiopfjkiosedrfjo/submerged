@@ -721,17 +721,6 @@ MonoBehaviour:
   - {fileID: -6288072647309666549}
   - {fileID: 7518938298396184218}
   - {fileID: -1410297666881709256}
-  - {fileID: -5056047329199068705}
-  - {fileID: 8343263935254978294}
-  - {fileID: -4600692226731487357}
-  - {fileID: -555918809107108273}
-  - {fileID: 8815770705403809735}
-  - {fileID: 8575121228859254072}
-  - {fileID: -6113352390891193836}
-  - {fileID: 5188387123474218046}
-  - {fileID: -3836960785910214270}
-  - {fileID: 7559350406896233710}
-  - {fileID: 1271773726207997065}
 --- !u!114 &853819529557874667
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1120,6 +1109,20 @@ MonoBehaviour:
   param:
     m_OverrideState: 1
     m_Value: 123
+--- !u!114 &4317462353558650307
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccf98a4a63d53254f8d6557c59e24b49, type: 3}
+  m_Name: FullScreenRendererFeature2VolumeComponent
+  m_EditorClassIdentifier: Assembly-CSharp::Mirza.VFXToolKit.FullScreenRendererFeature2VolumeComponent
+  active: 1
+  <displayName>k__BackingField: NewPostProcessEffect
 --- !u!114 &4644742534064026673
 MonoBehaviour:
   m_ObjectHideFlags: 3

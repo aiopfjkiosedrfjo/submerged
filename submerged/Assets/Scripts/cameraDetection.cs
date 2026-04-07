@@ -23,6 +23,10 @@ public class cameraDetection : MonoBehaviour
     public Material flashLight;
     public uiAnimations uiAnimations;
     private float distanceFromCamera;
+    private string speciesNametemp;
+    private int multiplier;
+    private int combo;
+    private int totalMultiplier;
     private Color originalFlashLightIntensity;
     [System.Serializable]
     public class PhotoData
@@ -30,7 +34,7 @@ public class cameraDetection : MonoBehaviour
         public Texture2D image;
         public float distanceFromCamera;
         public int multiplierIncrease;
-        public string speciesName;
+        public List<string> speciesName = new List<string>();
     }
     public List<PhotoData> photoDataList = new List<PhotoData>();
     private int fishCount = 0;
@@ -52,10 +56,10 @@ public class cameraDetection : MonoBehaviour
     }
     void takePhoto()
     {
-        
+        fishCount = 0;
+        totalMultiplier=0;
         photoCamera.Render();
         Graphics.CopyTexture(photoTexture, LastImage);
-        string speciesNametemp;
         audioSource.PlayOneShot(cameraShutter);
         uiAnimations.CapturedImageAnimation();
         
@@ -74,21 +78,28 @@ public class cameraDetection : MonoBehaviour
                     if (count > 10) break;
                     game.GetComponent<Transform>();
                     distanceFromCamera = Vector3.Distance(photoCamera.transform.position, game.transform.position);
-                    int multiplier = gameManager.instance.AddMultiplier(distanceFromCamera);
+                    multiplier = gameManager.instance.AddMultiplier(distanceFromCamera);
                     speciesNametemp = LayerMask.LayerToName(rend.gameObject.layer);
                     game.SetActive(false);
+                    totalMultiplier += multiplier;
                     fishCount++;
-                    savePhoto(multiplier, speciesNametemp);
+                    
                 }
             }
+        }
+        if (fishCount >0)
+        {
+            int extraPhotos = Mathf.Max(0, fishCount-1);
+            savePhoto(totalMultiplier, speciesNametemp, extraPhotos);
         }
     }
     public void RestoreFlashLightIntensity()
     {
         flashLight.SetColor("_EmissionColor", originalFlashLightIntensity);
     }
-    void savePhoto(int multiplier, string speciesNametemp)
+    void savePhoto(int multiplier, string speciesNametemp, int extraPhotos)
     {
+        combo =0;
         Texture2D image = new Texture2D(LastImage.width, LastImage.height, TextureFormat.RGBAHalf, false);
         RenderTexture.active = LastImage;
         image.ReadPixels(new Rect(0, 0, LastImage.width, LastImage.height), 0, 0);
@@ -98,9 +109,18 @@ public class cameraDetection : MonoBehaviour
             image = image,
             distanceFromCamera = distanceFromCamera,
             multiplierIncrease = multiplier,
-            speciesName = speciesNametemp
         };
-        photoCardInfo.text = $"Species: {photodata.speciesName}, Multi {multiplier}";
+        if (extraPhotos > 0)
+            for (int i = 0; i< extraPhotos; i++)
+            {
+                photodata.speciesName.Add(speciesNametemp);
+                combo++;
+            }
+        else
+        {
+            photodata.speciesName.Add(speciesNametemp);
+        }
+        photoCardInfo.text = $"Species: {photodata.speciesName[0]} + {combo}, Multi {multiplier}";
         photoDataList.Add(photodata);
         capturedImages.Add(image);
 

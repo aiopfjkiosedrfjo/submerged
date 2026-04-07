@@ -6,11 +6,9 @@ using UnityEngine;
 
 public class water : MonoBehaviour
 {
-    public float fogIntensity = 0.1f;
     public float buoyancyForce = 10f;
     public bool inWater = false;
     public Player playerController; // Reference to the player controller script
-    private Color originalFogColor;
     private float timer1 = 0f;
     private Vector3 originalGravity = Physics.gravity;
     private Vector3 reducedGravity = new Vector3(0, -1, 0);
@@ -21,12 +19,11 @@ public class water : MonoBehaviour
     public AudioClip waterAmbience1;
     public AudioClip waterSplash;
     public AudioClip waterExit;
-    public Material fogShader;
     private bool waterSplashHasPlayed = false; 
     private bool waterExitHasPlayed = false; 
+    private float nextAmbienceTime;
     public void Start()
     {
-        fogShader.SetFloat("_Density", 0.03f);
         Physics.gravity = originalGravity;
         audioSourceAmbience.clip = waterSound;
         
@@ -37,9 +34,12 @@ public class water : MonoBehaviour
         {
             timer1 += Time.deltaTime;
             if (!audioSourceAmbience.isPlaying) audioSourceAmbience.Play();
-            if (Random.Range(1f,500f) <= 1)
+            if (Time.time >= nextAmbienceTime)
             {
-                audioSourceAmbience.PlayOneShot(waterAmbience1);
+                Debug.Log("wefwsef");
+                audioSourceOneShots.PlayOneShot(waterAmbience1);
+
+                nextAmbienceTime = Time.time + Random.Range(10f, 40f);
             }
         }
         CheckSanityMeter();
@@ -59,7 +59,6 @@ public class water : MonoBehaviour
         {
             objectsInside.Add(other.gameObject);
             Physics.gravity = reducedGravity; 
-            fogShader.SetFloat("_Density", fogIntensity);
             inWater = true;
             if (!waterSplashHasPlayed)
             {
@@ -76,7 +75,6 @@ public class water : MonoBehaviour
         if (objectsInside.Contains(other.gameObject))
         {
             objectsInside.Remove(other.gameObject);
-            fogShader.SetFloat("_Density", 0.03f);
             inWater = false;
             Physics.gravity = originalGravity; 
             timer1 = 0f;
