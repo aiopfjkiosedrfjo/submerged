@@ -1,17 +1,10 @@
 using UnityEngine;
 
-/*
-    This script provides jumping and movement in Unity 3D - Gatsby
-*/
-
 public class Player : MonoBehaviour
 {
-    // Camera Rotation
-    public float mouseSensitivity = 2f;
-    private float verticalRotation = 0f;
-    public Transform cameraTransform;
     public water waterScript;
     public npcDetector npcDetector;
+    public Transform orientation;
     
     // Ground Movement
     public Rigidbody rb;
@@ -50,8 +43,6 @@ public class Player : MonoBehaviour
         moveHorizontal = Input.GetAxisRaw("Horizontal");
         moveForward = Input.GetAxisRaw("Vertical");
 
-        RotateCamera();
-
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             Jump();
@@ -85,8 +76,8 @@ public class Player : MonoBehaviour
     void MovePlayer()
     {
 
-        Vector3 movement = (transform.right * moveHorizontal + transform.forward * moveForward).normalized;
-        Vector3 targetVelocity = movement * MoveSpeed;
+        Vector3 movementDirection = (orientation.forward * moveForward + orientation.right * moveHorizontal).normalized;
+        Vector3 targetVelocity = movementDirection * MoveSpeed;
 
         // Apply movement to the Rigidbody
         Vector3 velocity = rb.linearVelocity;
@@ -99,17 +90,6 @@ public class Player : MonoBehaviour
         {
             rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
         }
-    }
-
-    void RotateCamera()
-    {
-        float horizontalRotation = Input.GetAxis("Mouse X") * mouseSensitivity;
-        transform.Rotate(0, horizontalRotation, 0);
-
-        verticalRotation -= Input.GetAxis("Mouse Y") * mouseSensitivity;
-        verticalRotation = Mathf.Clamp(verticalRotation, -90f, 90f);
-
-        cameraTransform.localRotation = Quaternion.Euler(verticalRotation, 0, 0);
     }
 
     void Jump()
