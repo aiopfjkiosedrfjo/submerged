@@ -6,9 +6,6 @@ using UnityEngine;
 public class npcDetector : MonoBehaviour
 {
     public LayerMask npcLayer;
-    public LayerMask INTERACTABLE_OBJECT;
-    public Transform playerTransform;
-    public Transform teleportLocation;
     public bool anchorInteractable = false;
     public bool interactable = false;
     [System.Serializable]
@@ -24,7 +21,7 @@ public class npcDetector : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void OnTriggerEnter(Collider other)
     {
-        if (((1 << other.gameObject.layer) & npcLayer) != 0 || ((1 << other.gameObject.layer) & INTERACTABLE_OBJECT) != 0)
+        if (((1 << other.gameObject.layer) & npcLayer) != 0)
         {
             foreach (var pair in npcCanvasArray)
             {
@@ -45,7 +42,7 @@ public class npcDetector : MonoBehaviour
     void OnTriggerExit(Collider other)
     {
         // Check if the exiting object is in the npcLayer
-        if (((1 << other.gameObject.layer) & npcLayer) != 0 || ((1 << other.gameObject.layer) & INTERACTABLE_OBJECT) != 0)
+        if (((1 << other.gameObject.layer) & npcLayer) != 0)
         {
             interactable= false;
             targettedNPC = null;
@@ -75,11 +72,6 @@ public class npcDetector : MonoBehaviour
                     ShowCanvasForNPC(targettedNPC);
                     UIENABLED = true;
                     Debug.Log("this one works");
-                }
-                else if (targettedNPC.layer == LayerMask.NameToLayer("INTERACTABLE_OBJECT"))
-                {
-                    playerTransform.position = teleportLocation.position;
-                    
                 }
             }
             else
