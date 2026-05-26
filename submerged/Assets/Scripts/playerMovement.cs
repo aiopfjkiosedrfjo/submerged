@@ -5,6 +5,8 @@ public class Player : MonoBehaviour
     public water waterScript;
     public npcDetector npcDetector;
     public Transform orientation;
+    public Transform REDROOMteleport;
+    //sss
     
     // Ground Movement
     public Rigidbody rb;
@@ -61,6 +63,10 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q) && npcDetector.anchorInteractable && isGrounded)
         {
             rb.linearVelocity = new Vector3(0, anchorForce, 0); // Jump interaction with NPC
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            transform.position = REDROOMteleport.position;
         }
 
 

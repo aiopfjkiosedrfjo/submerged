@@ -40,7 +40,7 @@ public class flock : MonoBehaviour
             StartCoroutine(AllFishLookAtPlayer());
 
         }
-        if (Vector3.Distance(transform.position, globalFlock.tankCenter) >= globalFlock.tankSize)
+        if (Vector3.Distance(transform.position, globalFlock.tankCenter) >= globalFlock.HORIZONTALtankSize)
         {
             turning = true;
         }
