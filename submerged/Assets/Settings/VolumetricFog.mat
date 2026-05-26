@@ -25,19 +25,19 @@ Material:
     m_TexEnvs:
     - _FogNoise:
         m_Texture: {fileID: 11700000, guid: c6a80adabc2ee4b4bbd305edef74a3d0, type: 3}
-        m_Scale: {x: 0.06, y: 0.35}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DensityMultiplier: 0.03
-    - _DensityThreshold: 0.451
+    - _DensityMultiplier: 0.08
+    - _DensityThreshold: 0.073
     - _LightScattering: 0.054
     - _MaxDistance: 184.94
-    - _NoiseOffset: 2.15
-    - _NoiseTiling: 1.53
-    - _StepSize: 1.2
+    - _NoiseOffset: 10.42
+    - _NoiseTiling: 0.5
+    - _StepSize: 5
     m_Colors:
-    - _Color: {r: 0.010012458, g: 0.097220115, b: 0.4245283, a: 1}
+    - _Color: {r: 0, g: 0.025249716, b: 0.122641504, a: 0}
     - _LightContribution: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

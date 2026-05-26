@@ -8,8 +8,9 @@ public class flock : MonoBehaviour
 {
     float speed;
     public float minimumspeed = 2f;
-    public float maximumspeed = 4f;
+    public float maximumspeed = 6f;
     public float rotationSpeed = 4.0f;
+    public float fleeingSpeed = 20f;
     public float neighbourDistance = 6.0f;
     float speedChangeTimer;
     bool turning = false;
@@ -71,6 +72,13 @@ public class flock : MonoBehaviour
                 speedChangeTimer = Random.Range(1f, 3f); // change every 1–3 seconds
             }
             transform.Translate(0, 0, Time.deltaTime * speed);
+        }
+        if (Vector3.Distance(player.transform.position, transform.position) < 7f)
+        {
+            Vector3 fleeDirection = (transform.position - player.transform.position).normalized;
+            transform.rotation = Quaternion.LookRotation(fleeDirection);
+            speed = fleeingSpeed;
+            
         }
     }
     void ApplyRules()

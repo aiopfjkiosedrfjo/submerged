@@ -46,17 +46,22 @@ public class uiManager : MonoBehaviour
     }
     public void sellPhotos()
     {
-        foreach (cameraDetection.PhotoData data in cameraDetection.photoDataList)
+        for (int i = 0; i < cameraDetection.photoDataList.Count; i++)
         {
-            foreach (Image img in cameraDetection.imageDisplay)
+            var data = cameraDetection.photoDataList[i];
+            var img = cameraDetection.imageDisplay[i];
+
+            if (img.sprite != null)
             {
-                if (img.sprite != null)
+                float cashToBeUpdated = (data.multiplierIncrease / 100f) + 1;
+                cashToBeUpdated *= 10;
+                if (data.speciesName.Count > 0)
                 {
-                    cashToBeUpdated = (data.multiplierIncrease/100f)+1;
-                    cashToBeUpdated *= 10;
-                    gameManager.instance.UpdateCash((int)cashToBeUpdated); 
-                    img.sprite = null; 
+                    cashToBeUpdated *= data.speciesName.Count;
                 }
+                gameManager.instance.UpdateCash((int)cashToBeUpdated);
+
+                img.sprite = null;
             }
         }
         cameraDetection.photoDataList.Clear();

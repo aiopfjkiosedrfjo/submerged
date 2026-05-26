@@ -1,13 +1,18 @@
 using System.Collections.Generic;
 using System.Threading;
 using JetBrains.Annotations;
+using TMPro;
 using UnityEngine;
 
 
 public class water : MonoBehaviour
 {
+    public Transform player;
+    public float seaLevel = -13.85f;
     public float buoyancyForce = 10f;
     public bool inWater = false;
+    public Color colorAtSurface;
+    public Color colorAtDepth;
     public Player playerController; // Reference to the player controller script
     private float timer1 = 0f;
     private Vector3 originalGravity = Physics.gravity;
@@ -19,9 +24,13 @@ public class water : MonoBehaviour
     public AudioClip waterAmbience1;
     public AudioClip waterSplash;
     public AudioClip waterExit;
+    public TextMeshProUGUI depthDisplay;
+    public Material VolumetricFog;
     private bool waterSplashHasPlayed = false; 
     private bool waterExitHasPlayed = false; 
     private float nextAmbienceTime;
+    public float depth;
+    public float maxDepth = 700f; // Define the maximum depth for clamping
     public void Start()
     {
         Physics.gravity = originalGravity;
@@ -32,6 +41,11 @@ public class water : MonoBehaviour
     {
         if (inWater)
         {
+            depth = Mathf.Abs(player.position.y - seaLevel);
+            depthDisplay.text = "Depth: " + depth.ToString("F1") + "m";
+            float t = Mathf.Clamp01(depth / maxDepth);
+            VolumetricFog.color = Color.Lerp(colorAtSurface, colorAtDepth, t);
+            VolumetricFog.SetFloat("_DensityMultiplier", Mathf.Lerp(0.015f, 0.08f, t));
             timer1 += Time.deltaTime;
             if (!audioSourceAmbience.isPlaying) audioSourceAmbience.Play();
             if (Time.time >= nextAmbienceTime)

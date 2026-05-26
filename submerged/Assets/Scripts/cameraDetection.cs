@@ -89,7 +89,7 @@ public class cameraDetection : MonoBehaviour
         }
         if (fishCount >0)
         {
-            int extraPhotos = Mathf.Max(0, fishCount-1);
+            int extraPhotos = Mathf.Max(0, fishCount);
             savePhoto(totalMultiplier, speciesNametemp, extraPhotos);
         }
     }
