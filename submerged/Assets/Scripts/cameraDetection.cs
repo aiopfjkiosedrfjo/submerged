@@ -10,6 +10,9 @@ using UnityEngine.UI;
 public class cameraDetection : MonoBehaviour
 {
     public Camera photoCamera;
+    public GameObject cameraFeed;
+    public Material lastImage;
+    public Material photoLiveFeedMaterial;
     public RenderTexture photoTexture;
     public RenderTexture LastImage;
     public Renderer[] photoTargets;
@@ -27,6 +30,7 @@ public class cameraDetection : MonoBehaviour
     private int multiplier;
     private int combo;
     private int totalMultiplier;
+    private bool isCameraCloseUp = false;
     private Color originalFlashLightIntensity;
     [System.Serializable]
     public class PhotoData
@@ -49,10 +53,51 @@ public class cameraDetection : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !isCameraCloseUp)
         {
             animator.SetTrigger("photo");
         }
+        else if (Input.GetKeyDown(KeyCode.Mouse0) && isCameraCloseUp)
+        {
+            takePhoto();
+        }
+        if (Input.GetKeyDown(KeyCode.Q) && !isCameraCloseUp)
+        {
+            animator.SetTrigger("cameraCloseUp");
+            isCameraCloseUp = true;
+            CameraCloseUp();
+        }
+        else if (Input.GetKeyDown(KeyCode.Q) && isCameraCloseUp)
+        {
+            animator.SetTrigger("cameraCloseUpReturn");
+            isCameraCloseUp = false;
+            CameraCloseUpReturn();
+        }
+        Debug.Log("Camera Close-Up: " + isCameraCloseUp);
+        CameraSettings();
+        
+    }
+    void CameraCloseUp()
+    {
+        cameraFeed.GetComponent<Renderer>().material = photoLiveFeedMaterial;
+    }
+    void CameraCloseUpReturn()
+    {
+        cameraFeed.GetComponent<Renderer>().material = lastImage;
+    }
+    void CameraSettings()
+    {
+        if (!isCameraCloseUp) return;
+        float scroll = Input.mouseScrollDelta.y;
+        if (scroll > 0)
+        {
+            photoCamera.fieldOfView = Mathf.Max(15, photoCamera.fieldOfView - 5);
+        }
+        else if (scroll < 0)
+        {
+            photoCamera.fieldOfView = Mathf.Min(60, photoCamera.fieldOfView + 5);
+        }
+
     }
     void takePhoto()
     {
