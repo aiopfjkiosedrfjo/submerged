@@ -9,6 +9,7 @@ using UnityEngine.UI;
 
 public class cameraDetection : MonoBehaviour
 {
+    public float zoomLevel;
     public Camera photoCamera;
     public GameObject cameraFeed;
     public Material lastImage;
@@ -38,6 +39,7 @@ public class cameraDetection : MonoBehaviour
         public Texture2D image;
         public float distanceFromCamera;
         public int multiplierIncrease;
+        public float zoomLevel;
         public List<string> speciesName = new List<string>();
     }
     public List<PhotoData> photoDataList = new List<PhotoData>();
@@ -73,7 +75,6 @@ public class cameraDetection : MonoBehaviour
             isCameraCloseUp = false;
             CameraCloseUpReturn();
         }
-        Debug.Log("Camera Close-Up: " + isCameraCloseUp);
         CameraSettings();
         
     }
@@ -97,12 +98,14 @@ public class cameraDetection : MonoBehaviour
         {
             photoCamera.fieldOfView = Mathf.Min(60, photoCamera.fieldOfView + 5);
         }
+        
 
     }
     void takePhoto()
     {
         fishCount = 0;
         totalMultiplier=0;
+        zoomLevel = photoCamera.fieldOfView;
         photoCamera.Render();
         Graphics.CopyTexture(photoTexture, LastImage);
         audioSource.PlayOneShot(cameraShutter);
@@ -125,6 +128,8 @@ public class cameraDetection : MonoBehaviour
                     distanceFromCamera = Vector3.Distance(photoCamera.transform.position, game.transform.position);
                     multiplier = gameManager.instance.AddMultiplier(distanceFromCamera);
                     speciesNametemp = LayerMask.LayerToName(rend.gameObject.layer);
+                    Vector3 viewportPos = photoCamera.WorldToViewportPoint(game.transform.position);
+                    Debug.Log(CheckifVisible(viewportPos, rend, photoCamera));
                     game.SetActive(false);
                     totalMultiplier += multiplier;
                     fishCount++;
@@ -142,6 +147,58 @@ public class cameraDetection : MonoBehaviour
     {
         flashLight.SetColor("_EmissionColor", originalFlashLightIntensity);
     }
+    public float CheckifVisible(Vector3 viewportPos, Renderer rend, Camera cam)
+    {
+        Bounds bounds = rend.bounds;
+        Vector3[] corners = {new Vector3(bounds.min.x, bounds.min.y, bounds.min.z),
+                    new Vector3(bounds.min.x, bounds.min.y, bounds.max.z),
+                    new Vector3(bounds.min.x, bounds.max.y, bounds.min.z),
+                    new Vector3(bounds.min.x, bounds.max.y, bounds.max.z),
+                    new Vector3(bounds.min.x, bounds.min.y, bounds.min.z),
+
+                    new Vector3(bounds.max.x, bounds.min.y, bounds.min.z),
+                    new Vector3(bounds.max.x, bounds.min.y, bounds.max.z),
+                    new Vector3(bounds.max.x, bounds.max.y, bounds.min.z),
+                    new Vector3(bounds.max.x, bounds.max.y, bounds.max.z)};
+        float minX = float.MaxValue;
+        float maxX = float.MinValue;
+        float minY = float.MaxValue;
+        float maxY = float.MinValue;
+        foreach (Vector3 corner in corners)
+        {
+            Vector3 vp = cam.WorldToViewportPoint(corner);
+
+            minX = Mathf.Min(minX, vp.x);
+            maxX = Mathf.Max(maxX, vp.x);
+
+            minY = Mathf.Min(minY, vp.y);
+            maxY = Mathf.Max(maxY, vp.y);
+        }
+        float clampedMinX = Mathf.Clamp01(minX);
+        float clampedMaxX = Mathf.Clamp01(maxX);
+        float clampedMinY = Mathf.Clamp01(minY);
+        float clampedMaxY = Mathf.Clamp01(maxY);
+        float width = Mathf.Max(0, clampedMaxX - clampedMinX);
+        float height = Mathf.Max(0, clampedMaxY - clampedMinY);
+        float screenCoverage = width * height;
+        float sizeScore = Mathf.Clamp01(screenCoverage / 0.25f); 
+
+        Vector2 center = new Vector2(0.5f, 0.5f);
+
+        Vector2 fishCenter = new Vector2(
+            (clampedMinX + clampedMaxX) * 0.5f,
+            (clampedMinY + clampedMaxY) * 0.5f
+        );
+
+        float distance = Vector2.Distance(center, fishCenter);
+        float centerScore = 1f - Mathf.Clamp01(distance / 0.5f);
+
+        float score =
+            (sizeScore * 0.6f) +
+            (centerScore * 0.4f);
+
+        return score * 100f;
+    }
     void savePhoto(int multiplier, string speciesNametemp, int extraPhotos)
     {
         combo =0;
@@ -154,6 +211,7 @@ public class cameraDetection : MonoBehaviour
             image = image,
             distanceFromCamera = distanceFromCamera,
             multiplierIncrease = multiplier,
+            zoomLevel = zoomLevel
         };
         if (extraPhotos > 0)
             for (int i = 0; i< extraPhotos; i++)

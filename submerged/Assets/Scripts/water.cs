@@ -45,7 +45,7 @@ public class water : MonoBehaviour
             depthDisplay.text = "Depth: " + depth.ToString("F1") + "m";
             float t = Mathf.Clamp01(depth / maxDepth);
             VolumetricFog.color = Color.Lerp(colorAtSurface, colorAtDepth, t);
-            VolumetricFog.SetFloat("_DensityMultiplier", Mathf.Lerp(0.015f, 0.08f, t));
+            VolumetricFog.SetFloat("_DensityMultiplier", Mathf.Lerp(0.025f, 0.08f, t));
             timer1 += Time.deltaTime;
             if (!audioSourceAmbience.isPlaying) audioSourceAmbience.Play();
             if (Time.time >= nextAmbienceTime)
@@ -63,7 +63,6 @@ public class water : MonoBehaviour
         if (inWater)
         {
             gameManager.instance.sanityLevel -= Time.deltaTime / 5f;
-            Debug.Log("Sanity Level: " + gameManager.instance.sanityLevel);
         }
     }
 
