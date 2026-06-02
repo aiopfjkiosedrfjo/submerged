@@ -66,7 +66,8 @@ public class Player : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
-            transform.position = REDROOMteleport.position;
+            rb.linearVelocity = Vector3.zero;
+            rb.position = REDROOMteleport.position;
         }
 
 
@@ -124,5 +125,10 @@ public class Player : MonoBehaviour
             // Rising: Change multiplier to make player reach peak of jump faster
             rb.linearVelocity += Vector3.up * Physics.gravity.y * ascendMultiplier  * Time.fixedDeltaTime;
         }
+    }
+    public void Die()
+    {
+        rb.linearVelocity = Vector3.zero;
+        rb.position = new Vector3(-2,6,16);
     }
 }

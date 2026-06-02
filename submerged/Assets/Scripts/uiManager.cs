@@ -6,17 +6,20 @@ public class uiManager : MonoBehaviour
 {
     public Canvas uiCanvas;
     public Canvas traderUICanvas;
+    public Canvas traderUICanvas2;
     public TextMeshProUGUI cashDisplay;
     public TextMeshProUGUI npcDisplay;
     public npcDetector npcDetector;
     public cameraDetection cameraDetection;
     public static uiManager Instance;
     public float cashToBeUpdated;
+    public float cashMultiplierIncrease;
     void Start()
     {
         Instance = this;
         uiCanvas.enabled = false;
         traderUICanvas.enabled = false;
+        traderUICanvas2.enabled = false;
     }
 
     public void showInteractUI()
@@ -32,6 +35,7 @@ public class uiManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         traderUICanvas.enabled = false;
+        traderUICanvas2.enabled = false;
         uiCanvas.enabled = false;
     }
     public void openInventoryUI()
@@ -53,12 +57,13 @@ public class uiManager : MonoBehaviour
 
             if (img.sprite != null)
             {
-                float cashToBeUpdated = (data.multiplierIncrease / 100f) + 1;
+                float cashToBeUpdated = (data.multiplierIncrease / 10f) + cashMultiplierIncrease;
                 cashToBeUpdated *= 10;
                 if (data.speciesName.Count > 0)
                 {
                     cashToBeUpdated *= data.speciesName.Count;
                 }
+                Debug.Log("Fish No." + i + " Multiplier: " + data.multiplierIncrease + " Species Count: " + data.speciesName.Count + " Total Cash: " + cashToBeUpdated);
                 gameManager.instance.UpdateCash((int)cashToBeUpdated);
 
                 img.sprite = null;
@@ -73,6 +78,7 @@ public class uiManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         traderUICanvas.enabled = false;
+        traderUICanvas2.enabled = false;
     }
     public void updateCashDisplay()
     {
@@ -80,6 +86,15 @@ public class uiManager : MonoBehaviour
         {
             int playerCash = gameManager.instance.playerCash;
             cashDisplay.text = playerCash.ToString();
+        }
+    }
+    public void IncreaseCashMultiplier()
+    {
+        if (gameManager.instance.playerCash >= 100)
+        {
+            gameManager.instance.UpdateCash(-100);
+            cashMultiplierIncrease += 0.1f;
+            updateCashDisplay();
         }
     }
 }

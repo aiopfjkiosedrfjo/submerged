@@ -7,7 +7,10 @@ using UnityEngine;
 
 public class water : MonoBehaviour
 {
+    public Player playerScript;
+    public TextMeshProUGUI oxygenDisplay;
     public Transform player;
+    public float oxygenLevel = 60f;
     public float seaLevel = -13.85f;
     public float buoyancyForce = 10f;
     public bool inWater = false;
@@ -47,6 +50,8 @@ public class water : MonoBehaviour
             VolumetricFog.color = Color.Lerp(colorAtSurface, colorAtDepth, t);
             VolumetricFog.SetFloat("_DensityMultiplier", Mathf.Lerp(0.025f, 0.08f, t));
             timer1 += Time.deltaTime;
+            oxygenLevel = Mathf.Max(0, oxygenLevel - Time.deltaTime);
+            oxygenDisplay.text = "Oxygen: " + oxygenLevel.ToString("F0");
             if (!audioSourceAmbience.isPlaying) audioSourceAmbience.Play();
             if (Time.time >= nextAmbienceTime)
             {
@@ -56,6 +61,15 @@ public class water : MonoBehaviour
                 nextAmbienceTime = Time.time + Random.Range(10f, 40f);
             }
         }
+        else
+        {
+            oxygenLevel = 60f;
+            oxygenDisplay.text = "Oxygen: " + oxygenLevel.ToString("F0");
+        }
+        if (oxygenLevel <= 0){
+            playerScript.Die();
+        }
+
         CheckSanityMeter();
     }
     public void CheckSanityMeter()

@@ -28,7 +28,7 @@ public class cameraDetection : MonoBehaviour
     public uiAnimations uiAnimations;
     private float distanceFromCamera;
     private string speciesNametemp;
-    private int multiplier;
+    private float multiplier;
     private int combo;
     private int totalMultiplier;
     private bool isCameraCloseUp = false;
@@ -129,9 +129,10 @@ public class cameraDetection : MonoBehaviour
                     multiplier = gameManager.instance.AddMultiplier(distanceFromCamera);
                     speciesNametemp = LayerMask.LayerToName(rend.gameObject.layer);
                     Vector3 viewportPos = photoCamera.WorldToViewportPoint(game.transform.position);
-                    Debug.Log(CheckifVisible(viewportPos, rend, photoCamera));
+                    multiplier *= (CheckifVisible(viewportPos, rend, photoCamera)/10);git
                     game.SetActive(false);
-                    totalMultiplier += multiplier;
+                    int multiplierINT = Mathf.RoundToInt(multiplier);
+                    totalMultiplier += multiplierINT;
                     fishCount++;
                     
                 }

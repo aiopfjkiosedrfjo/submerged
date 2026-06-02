@@ -33,9 +33,9 @@ public class gameManager : MonoBehaviour
     }
     int GetDistanceMultiplier(float distanceFromCamera)
     {
-        if (distanceFromCamera < 2) return 30;
-        if (distanceFromCamera < 5) return 20;
-        if (distanceFromCamera < 10) return 10;
-        return 0;
+        if (distanceFromCamera < 10) return 30;
+        if (distanceFromCamera < 20) return 20;
+        if (distanceFromCamera < 30) return 10;
+        return 1;
     }
 }
