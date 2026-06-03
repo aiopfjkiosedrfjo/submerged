@@ -10,6 +10,7 @@ public class water : MonoBehaviour
     public Player playerScript;
     public TextMeshProUGUI oxygenDisplay;
     public Transform player;
+    public Light directionalLight;
     public float oxygenLevel = 60f;
     public float seaLevel = -13.85f;
     public float buoyancyForce = 10f;
@@ -24,6 +25,7 @@ public class water : MonoBehaviour
     public AudioClip waterSound; 
     public AudioSource audioSourceOneShots; 
     public AudioSource audioSourceAmbience;
+    public AudioClip aboveWaterAmbience;
     public AudioClip waterAmbience1;
     public AudioClip waterSplash;
     public AudioClip waterExit;
@@ -48,10 +50,12 @@ public class water : MonoBehaviour
             depthDisplay.text = "Depth: " + depth.ToString("F1") + "m";
             float t = Mathf.Clamp01(depth / maxDepth);
             VolumetricFog.color = Color.Lerp(colorAtSurface, colorAtDepth, t);
-            VolumetricFog.SetFloat("_DensityMultiplier", Mathf.Lerp(0.025f, 0.08f, t));
+            directionalLight.intensity = Mathf.Lerp(1.6f, 0.01f, t);
+            VolumetricFog.SetFloat("_DensityMultiplier", Mathf.Lerp(0.05f, 0.15f, t));
             timer1 += Time.deltaTime;
             oxygenLevel = Mathf.Max(0, oxygenLevel - Time.deltaTime);
             oxygenDisplay.text = "Oxygen: " + oxygenLevel.ToString("F0");
+            audioSourceAmbience.clip = waterSound;
             if (!audioSourceAmbience.isPlaying) audioSourceAmbience.Play();
             if (Time.time >= nextAmbienceTime)
             {
@@ -63,6 +67,8 @@ public class water : MonoBehaviour
         }
         else
         {
+            audioSourceAmbience.clip = aboveWaterAmbience;
+            if (!audioSourceAmbience.isPlaying) audioSourceAmbience.Play();
             oxygenLevel = 60f;
             oxygenDisplay.text = "Oxygen: " + oxygenLevel.ToString("F0");
         }

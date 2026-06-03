@@ -129,7 +129,7 @@ public class cameraDetection : MonoBehaviour
                     multiplier = gameManager.instance.AddMultiplier(distanceFromCamera);
                     speciesNametemp = LayerMask.LayerToName(rend.gameObject.layer);
                     Vector3 viewportPos = photoCamera.WorldToViewportPoint(game.transform.position);
-                    multiplier *= (CheckifVisible(viewportPos, rend, photoCamera)/10);git
+                    multiplier *= (CheckifVisible(viewportPos, rend, photoCamera)/10);
                     game.SetActive(false);
                     int multiplierINT = Mathf.RoundToInt(multiplier);
                     totalMultiplier += multiplierINT;
