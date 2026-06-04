@@ -10,6 +10,9 @@ using UnityEngine.UI;
 public class cameraDetection : MonoBehaviour
 {
     public float zoomLevel;
+    public bool flashActive = false;
+    public TextMeshPro flashText;
+    public GameObject volumetricLight;
     public Camera photoCamera;
     public GameObject cameraFeed;
     public Material lastImage;
@@ -49,6 +52,8 @@ public class cameraDetection : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        volumetricLight.SetActive(false);
+        flashText.text = "OFF";
         photoCamera.targetTexture = photoTexture;
         originalFlashLightIntensity = flashLight.GetColor("_EmissionColor");
         
@@ -63,20 +68,38 @@ public class cameraDetection : MonoBehaviour
         {
             takePhoto();
         }
-        if (Input.GetKeyDown(KeyCode.Q) && !isCameraCloseUp)
+        if (Input.GetKeyDown(KeyCode.Mouse1) && !isCameraCloseUp)
         {
             animator.SetTrigger("cameraCloseUp");
             isCameraCloseUp = true;
             CameraCloseUp();
         }
-        else if (Input.GetKeyDown(KeyCode.Q) && isCameraCloseUp)
+        else if (Input.GetKeyDown(KeyCode.Mouse1) && isCameraCloseUp)
         {
             animator.SetTrigger("cameraCloseUpReturn");
             isCameraCloseUp = false;
             CameraCloseUpReturn();
         }
+        if (Input.GetKeyDown(KeyCode.Q) && !flashActive)
+        {
+            flashActive = true;
+            flashText.text = "ON";
+        }
+        else if (Input.GetKeyDown(KeyCode.Q) && flashActive)
+        {
+            flashActive = false;
+            flashText.text = "OFF";
+        }
         CameraSettings();
         
+    }
+    public System.Collections.IEnumerator FlashEffect()
+    {
+        flashLight.SetColor("_EmissionColor", Color.white * 20);
+        volumetricLight.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        flashLight.SetColor("_EmissionColor", originalFlashLightIntensity);
+        volumetricLight.SetActive(false);
     }
     void CameraCloseUp()
     {
@@ -109,9 +132,11 @@ public class cameraDetection : MonoBehaviour
         photoCamera.Render();
         Graphics.CopyTexture(photoTexture, LastImage);
         audioSource.PlayOneShot(cameraShutter);
+        if (flashActive)
+        {
+            StartCoroutine(FlashEffect());
+        }
         uiAnimations.CapturedImageAnimation();
-        
-        flashLight.SetColor("_EmissionColor",Color.white* 10);
 
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(photoCamera);
         foreach (GameObject game in globalFlock.allFish)
@@ -129,7 +154,7 @@ public class cameraDetection : MonoBehaviour
                     multiplier = gameManager.instance.AddMultiplier(distanceFromCamera);
                     speciesNametemp = LayerMask.LayerToName(rend.gameObject.layer);
                     Vector3 viewportPos = photoCamera.WorldToViewportPoint(game.transform.position);
-                    multiplier *= (CheckifVisible(viewportPos, rend, photoCamera)/10);
+                    multiplier *= CheckifVisible(viewportPos, rend, photoCamera)/10;
                     game.SetActive(false);
                     int multiplierINT = Mathf.RoundToInt(multiplier);
                     totalMultiplier += multiplierINT;
@@ -143,10 +168,6 @@ public class cameraDetection : MonoBehaviour
             int extraPhotos = Mathf.Max(0, fishCount);
             savePhoto(totalMultiplier, speciesNametemp, extraPhotos);
         }
-    }
-    public void RestoreFlashLightIntensity()
-    {
-        flashLight.SetColor("_EmissionColor", originalFlashLightIntensity);
     }
     public float CheckifVisible(Vector3 viewportPos, Renderer rend, Camera cam)
     {

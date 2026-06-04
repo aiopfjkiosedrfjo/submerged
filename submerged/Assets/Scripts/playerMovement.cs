@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
@@ -6,6 +7,7 @@ public class Player : MonoBehaviour
     public npcDetector npcDetector;
     public Transform orientation;
     public Transform REDROOMteleport;
+    public InputActionReference Jetpack;
     //sss
     
     // Ground Movement
@@ -13,6 +15,10 @@ public class Player : MonoBehaviour
     public float MoveSpeed = 5f;
     private float moveHorizontal;
     private float moveForward;
+    private bool holdingJetpack = false;
+    public float jetPackAmount = 5f;
+    public float jetPackAmountOriginal = 5f;
+    public float jetPackForce = 3f;
 
     // Jumping
     public float anchorForce = 15f;
@@ -39,9 +45,23 @@ public class Player : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
+    void OnEnable()
+    {
+        Jetpack.action.started += OnJetpackStart;
+        Jetpack.action.canceled += OnJetpackEnd;
+    }
 
+    void OnDisable()
+    {
+        Jetpack.action.started -= OnJetpackStart;
+        Jetpack.action.canceled -= OnJetpackEnd;
+    }
     void Update()
     {
+        if (isGrounded)
+        {
+            jetPackAmount = jetPackAmountOriginal;
+        }
         moveHorizontal = Input.GetAxisRaw("Horizontal");
         moveForward = Input.GetAxisRaw("Vertical");
 
@@ -49,6 +69,12 @@ public class Player : MonoBehaviour
         {
             Jump();
         }
+        if (holdingJetpack && jetPackAmount > 0f && !isGrounded && waterScript.inWater)
+        {
+            rb.AddForce(new Vector3(0, jetPackForce, 0), ForceMode.VelocityChange);
+            jetPackAmount -= 1f;
+        }
+        
 
         // Checking when we're on the ground and keeping track of our ground check delay
         if (!isGrounded && groundCheckTimer <= 0f)
@@ -72,6 +98,16 @@ public class Player : MonoBehaviour
 
 
     }
+    void OnJetpackStart(InputAction.CallbackContext context)
+    {
+        holdingJetpack = true;
+    }
+
+    void OnJetpackEnd(InputAction.CallbackContext context)
+    {
+        holdingJetpack = false;
+    }
+
 
     void FixedUpdate()
     {

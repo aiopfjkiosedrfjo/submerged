@@ -11,8 +11,8 @@ public class particleFollow : MonoBehaviour
         if (target != null)
         {
             var main = particle.main;
-            main.startSizeMultiplier = Mathf.Lerp(0.5f, 0.1f, target.position.y / 10f);
-            transform.position = Vector3.Lerp(transform.position, target.position, Time.deltaTime / 2f);
+            main.startSizeMultiplier = Mathf.Lerp(0.25f, 0.05f, target.position.y / 10f);
+            transform.position = Vector3.Lerp(transform.position, target.position, Time.deltaTime / 1.2f);
         }
     }
 }
