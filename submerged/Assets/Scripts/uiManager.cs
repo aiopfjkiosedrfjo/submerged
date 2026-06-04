@@ -93,7 +93,7 @@ public class uiManager : MonoBehaviour
         if (gameManager.instance.playerCash >= 100)
         {
             gameManager.instance.UpdateCash(-100);
-            cashMultiplierIncrease += 0.1f;
+            cashMultiplierIncrease += 0.75f;
             updateCashDisplay();
         }
     }
