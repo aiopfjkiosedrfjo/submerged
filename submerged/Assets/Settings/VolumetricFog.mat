@@ -29,7 +29,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DensityMultiplier: 0.15
+    - _DensityMultiplier: 0.03
     - _DensityThreshold: 0.01
     - _FogHeightGradient: 0.01
     - _LightScattering: 0.054

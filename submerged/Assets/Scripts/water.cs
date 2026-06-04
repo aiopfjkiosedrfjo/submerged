@@ -50,7 +50,7 @@ public class water : MonoBehaviour
             depthDisplay.text = "Depth: " + depth.ToString("F1") + "m";
             float t = Mathf.Clamp01(depth / maxDepth);
             VolumetricFog.color = Color.Lerp(colorAtSurface, colorAtDepth, t);
-            directionalLight.intensity = Mathf.Lerp(1.6f, 0.01f, t);
+            directionalLight.intensity = Mathf.Lerp(3, 0.01f, t);
             VolumetricFog.SetFloat("_DensityMultiplier", Mathf.Lerp(0.05f, 0.15f, t));
             timer1 += Time.deltaTime;
             oxygenLevel = Mathf.Max(0, oxygenLevel - Time.deltaTime);
@@ -71,6 +71,9 @@ public class water : MonoBehaviour
             if (!audioSourceAmbience.isPlaying) audioSourceAmbience.Play();
             oxygenLevel = 60f;
             oxygenDisplay.text = "Oxygen: " + oxygenLevel.ToString("F0");
+            VolumetricFog.SetFloat("_DensityMultiplier", 0.03f);
+            directionalLight.intensity = 3;
+            depthDisplay.text = "Depth: 0m";
         }
         if (oxygenLevel <= 0){
             playerScript.Die();
