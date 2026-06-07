@@ -15,6 +15,11 @@ Shader "Custom/VolumetricFOg"
         _FogHeightGradient("Fog height gradient", Range(0, 10)) = 1
         [HDR]_LightContribution("Light contribution", Color) = (1, 1, 1, 1)
         _LightScattering("Light scattering", Range(0, 1)) = 0.2
+
+        _TopColor("Top Water Color", Color) = (0.4, 0.8, 1.0, 1)
+        _BottomColor("Deep Water Color", Color) = (0.0, 0.05, 0.2, 1)
+        _SurfaceHeight("Surface Height", Float) = 0
+        _DeepHeight("Deep Height", Float) = -100
     }
 
     SubShader
@@ -32,6 +37,7 @@ Shader "Custom/VolumetricFOg"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
             #include "Packages/com.unity.render-pipelines.core/Runtime/Utilities/Blit.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
+
             float _FogHeightGradient;
             float4 _Color;
             float _MaxDistance;
@@ -44,6 +50,11 @@ Shader "Custom/VolumetricFOg"
             float4 _LightContribution;
             float _LightScattering;
 
+            float4 _TopColor;
+            float4 _BottomColor;
+            float _SurfaceHeight;
+            float _DeepHeight;
+
             float henyey_greenstein(float angle, float scattering)
             {
                 return (1.0 - angle * angle) / (4.0 * PI * pow(1.0 + scattering * scattering - (2.0 * scattering) * angle, 1.5f));
@@ -55,6 +66,19 @@ Shader "Custom/VolumetricFOg"
                 float density = dot(noise, noise);
                 density = saturate(density - _DensityThreshold) * _DensityMultiplier;
                 return density;
+            }
+
+            float3 GetDepthColor(float3 worldPos)
+            {
+                float depthT = saturate(
+                    (worldPos.y - _DeepHeight) /
+                    (_SurfaceHeight - _DeepHeight)
+                );
+
+
+                depthT = pow(depthT, 3.0);
+
+                return lerp(_BottomColor.rgb, _TopColor.rgb, depthT);
             }
 
             half4 frag(Varyings IN) : SV_Target
@@ -74,29 +98,35 @@ Shader "Custom/VolumetricFOg"
                 float transmittance = 1;
                 float4 fogCol = _Color;
 
-            while(distTravelled < distLimit)
-            {
-                float3 rayPos = entryPoint + rayDir * distTravelled;
-                float density = get_density(rayPos);
-                float worldHeight = saturate(rayPos.y * _FogHeightGradient);
-                float screenHeight = IN.texcoord.y;
-                float gradient = (1.0 - worldHeight) * 0.7 + screenHeight * 0.3;
-
-                density *= gradient;
-
-                if (density > 0)
+                while(distTravelled < distLimit)
                 {
-                    Light mainLight = GetMainLight(TransformWorldToShadowCoord(rayPos));
+                    float3 rayPos = entryPoint + rayDir * distTravelled;
+                    float density = get_density(rayPos);
 
-                    fogCol.rgb += mainLight.color.rgb * _LightContribution.rgb *
-                                henyey_greenstein(dot(rayDir, mainLight.direction), _LightScattering) *
-                                density * mainLight.shadowAttenuation * _StepSize;
+                    float worldHeight = saturate(rayPos.y * _FogHeightGradient);
+                    float screenHeight = IN.texcoord.y;
+                    float gradient = (1.0 - worldHeight) * 0.7 + screenHeight * 0.3;
 
-                    transmittance *= exp(-density * _StepSize);
+                    density *= gradient;
+
+                    if (density > 0)
+                    {
+                        Light mainLight = GetMainLight(TransformWorldToShadowCoord(rayPos));
+
+                        float3 depthColor = GetDepthColor(rayPos);
+
+                        fogCol.rgb += (
+                            depthColor +
+                            mainLight.color.rgb * _LightContribution.rgb *
+                            henyey_greenstein(dot(rayDir, mainLight.direction), _LightScattering) *
+                            mainLight.shadowAttenuation
+                        ) * density * _StepSize;
+
+                        transmittance *= exp(-density * _StepSize);
+                    }
+
+                    distTravelled += _StepSize;
                 }
-
-                distTravelled += _StepSize;
-            }
                 
                 return lerp(col, fogCol, 1.0 - saturate(transmittance));
             }
