@@ -1974,6 +1974,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 162379740}
   m_CullTransparentMesh: 1
+--- !u!1 &166366724
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 166366725}
+  m_Layer: 0
+  m_Name: ridingBoatPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &166366725
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 166366724}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.214, y: 1.664, z: -2.235}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3980190873052312486}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &176351264
 GameObject:
   m_ObjectHideFlags: 0
@@ -29558,37 +29589,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 754535757}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1165260644
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1165260645}
-  m_Layer: 0
-  m_Name: boatRidingPosition
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1165260645
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1165260644}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.103, y: 1.913, z: -2.451}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3980190873052312486}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1168906456
 GameObject:
   m_ObjectHideFlags: 0
@@ -38935,9 +38935,7 @@ MonoBehaviour:
   REDROOMteleport: {fileID: 767060655}
   Jetpack: {fileID: -6249358669747977746, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   rb: {fileID: 0}
-  isRidingBoat: 0
   MoveSpeed: 5
-  ridingBoatPosition: {fileID: 1165260645}
   jetPackAmount: 200
   jetPackAmountOriginal: 200
   jetPackForce: 0.07
@@ -39064,7 +39062,7 @@ Transform:
   m_GameObject: {fileID: 1721689516}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -15.76, y: 1.49, z: 16.3}
+  m_LocalPosition: {x: -15.76, y: 4.77, z: 16.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -45288,7 +45286,7 @@ Transform:
   m_GameObject: {fileID: 4357138280328243484}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -14.323069, y: -1.2399993, z: 17.63}
+  m_LocalPosition: {x: -14.323069, y: 2.0400007, z: 17.63}
   m_LocalScale: {x: 2.0076, y: 2.0076, z: 2.0076}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -45298,8 +45296,8 @@ Transform:
   - {fileID: 1979339545}
   - {fileID: 313596056}
   - {fileID: 309282429}
-  - {fileID: 1165260645}
   - {fileID: 1066252083}
+  - {fileID: 166366725}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!222 &4118275806349607805
@@ -45338,8 +45336,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3980190873052312486}
-  - component: {fileID: 4357138280328243486}
-  - component: {fileID: 4357138280328243485}
   m_Layer: 0
   m_Name: boat
   m_TagString: Untagged
@@ -45347,50 +45343,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &4357138280328243485
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4357138280328243484}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4913a5750cfb1cd4a8ba5e4bcc832682, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::boatController
-  forwardSpeed: 1500
-  turnSpeed: 0.2
-  rb: {fileID: 0}
-  moveInput: 0
-  turnInput: 0
---- !u!54 &4357138280328243486
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4357138280328243484}
-  serializedVersion: 5
-  m_Mass: 50
-  m_LinearDamping: 3
-  m_AngularDamping: 1
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 84
-  m_CollisionDetection: 0
 --- !u!222 &4546392735860102378
 CanvasRenderer:
   m_ObjectHideFlags: 0

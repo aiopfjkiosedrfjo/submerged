@@ -35,14 +35,14 @@ Material:
     - _DensityThreshold: 0.05
     - _FogHeightGradient: 1.08
     - _LightScattering: 0.054
-    - _MaxDistance: 477.89276
+    - _MaxDistance: 491.88934
     - _NoiseOffset: 1.5
     - _NoiseTiling: 0.5
     - _StepSize: 2
     - _SurfaceHeight: -48.7
     m_Colors:
     - _BottomColor: {r: 0, g: 0.0012320572, b: 0.122641504, a: 1}
-    - _Color: {r: 0.011114493, g: 0.094016284, b: 0.40689993, a: 0}
+    - _Color: {r: 0.011526157, g: 0.09656329, b: 0.4174284, a: 0}
     - _FogBottomColor: {r: 0, g: 0, b: 0.1981132, a: 1}
     - _FogTopColor: {r: 0, g: 0.13725495, b: 1, a: 1}
     - _LightContribution: {r: 1, g: 1, b: 1, a: 1}

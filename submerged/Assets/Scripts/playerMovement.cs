@@ -12,9 +12,7 @@ public class Player : MonoBehaviour
     
     // Ground Movement
     public Rigidbody rb;
-    public bool isRidingBoat = false;
     public float MoveSpeed = 5f;
-    public Transform ridingBoatPosition;
     private float moveHorizontal;
     private float moveForward;
     private bool holdingJetpack = false;
@@ -60,16 +58,6 @@ public class Player : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            isRidingBoat = !isRidingBoat;
-            return;
-        }
-        if (isRidingBoat)
-        {
-            rb.linearVelocity = Vector3.zero;
-            transform.position = ridingBoatPosition.position;
-        }
         if (isGrounded)
         {
             jetPackAmount = jetPackAmountOriginal;
