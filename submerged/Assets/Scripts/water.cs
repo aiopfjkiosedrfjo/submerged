@@ -52,6 +52,7 @@ public class water : MonoBehaviour
             VolumetricFog.color = Color.Lerp(colorAtSurface, colorAtDepth, t);
             directionalLight.intensity = Mathf.Lerp(2, 0.01f, t);
             VolumetricFog.SetFloat("_DensityMultiplier", Mathf.Lerp(0.05f, 0.15f, t));
+            VolumetricFog.SetFloat("_MaxDistance", Mathf.Lerp(500f, 100f, t));
             timer1 += Time.deltaTime;
             oxygenLevel = Mathf.Max(0, oxygenLevel - Time.deltaTime);
             oxygenDisplay.text = "Oxygen: " + oxygenLevel.ToString("F0");
