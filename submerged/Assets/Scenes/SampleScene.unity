@@ -38933,8 +38933,10 @@ MonoBehaviour:
   npcDetector: {fileID: 830861204}
   orientation: {fileID: 1830739916}
   REDROOMteleport: {fileID: 767060655}
+  boatTeleport: {fileID: 166366725}
   Jetpack: {fileID: -6249358669747977746, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   rb: {fileID: 0}
+  isRidingBoat: 0
   MoveSpeed: 5
   jetPackAmount: 200
   jetPackAmountOriginal: 200
@@ -38980,7 +38982,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1721689516}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 8928caf307e3a46558e18073cc30b97a, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -45336,6 +45338,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3980190873052312486}
+  - component: {fileID: 4357138280328243486}
+  - component: {fileID: 4357138280328243485}
   m_Layer: 0
   m_Name: boat
   m_TagString: Untagged
@@ -45343,6 +45347,49 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &4357138280328243485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4357138280328243484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b7533bd18ceb42a4bb2a4e721ae0c57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  boatSpeed: 5
+  turnSpeed: 1
+  rb: {fileID: 4357138280328243486}
+  player: {fileID: 1721689517}
+--- !u!54 &4357138280328243486
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4357138280328243484}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 1
+  m_AngularDamping: 1
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 84
+  m_CollisionDetection: 0
 --- !u!222 &4546392735860102378
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -46243,7 +46290,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4267900015583143465}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 8928caf307e3a46558e18073cc30b97a, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

@@ -7,11 +7,13 @@ public class Player : MonoBehaviour
     public npcDetector npcDetector;
     public Transform orientation;
     public Transform REDROOMteleport;
+    public Transform boatTeleport;
     public InputActionReference Jetpack;
     //sss
     
     // Ground Movement
     public Rigidbody rb;
+    public bool isRidingBoat = false;
     public float MoveSpeed = 5f;
     private float moveHorizontal;
     private float moveForward;
@@ -58,6 +60,16 @@ public class Player : MonoBehaviour
     }
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            isRidingBoat = !isRidingBoat;
+
+        }
+        if (isRidingBoat)
+        {
+            return;
+        }
+
         if (isGrounded)
         {
             jetPackAmount = jetPackAmountOriginal;
@@ -111,6 +123,13 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
+
+        if (isRidingBoat)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.position = boatTeleport.position; 
+            return;        
+        }
         MovePlayer();
         ApplyJumpPhysics();
 
