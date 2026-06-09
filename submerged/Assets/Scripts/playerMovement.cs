@@ -65,10 +65,6 @@ public class Player : MonoBehaviour
             isRidingBoat = !isRidingBoat;
 
         }
-        if (isRidingBoat)
-        {
-            return;
-        }
 
         if (isGrounded)
         {
@@ -123,12 +119,12 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-
         if (isRidingBoat)
         {
             rb.linearVelocity = Vector3.zero;
-            rb.position = boatTeleport.position; 
-            return;        
+            rb.MovePosition(boatTeleport.position);  
+            rb.isKinematic = true;    
+            return;
         }
         MovePlayer();
         ApplyJumpPhysics();
@@ -137,7 +133,7 @@ public class Player : MonoBehaviour
 
     void MovePlayer()
     {
-
+        rb.isKinematic = false;
         Vector3 movementDirection = (orientation.forward * moveForward + orientation.right * moveHorizontal).normalized;
         Vector3 targetVelocity = movementDirection * MoveSpeed;
 

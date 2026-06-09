@@ -46,10 +46,10 @@ Material:
     - _QueueOffset: 0
     - _Transparency: 1
     - _rippleSpeed: 0.2
-    - _waterDensity: 1.5
-    - _waveDensity: 50
-    - _waveScale: 10
-    - _wavesSpeed: 0.1
+    - _waterDensity: 1
+    - _waveDensity: 10
+    - _waveScale: 33.6
+    - _wavesSpeed: 0.005
     m_Colors:
     - _baseColor: {r: 0.025453912, g: 0.14374527, b: 0.41509426, a: 0}
     - _rippleColor: {r: 0.06652722, g: 0.31913325, b: 0.6132076, a: 0}
