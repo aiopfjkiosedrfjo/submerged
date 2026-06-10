@@ -31,7 +31,7 @@ Material:
     m_Floats:
     - _DeepHeight: -273
     - _Density: 0.08
-    - _DensityMultiplier: 0.1
+    - _DensityMultiplier: 0.03
     - _DensityThreshold: 0.05
     - _FogHeightGradient: 1.08
     - _LightScattering: 0.054
