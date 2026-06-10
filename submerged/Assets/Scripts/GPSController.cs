@@ -5,7 +5,11 @@ public class GPSController : MonoBehaviour
 {
     public Transform GPSPOINT_1;
     public float distanceToPoint1;
+    public Material pointMaterial;
     public TextMeshPro GPSTEXT;
+    public Color pointColor = Color.red;
+    public Color noPointColor = Color.gray;
+    public float emmisionStrength = 1f;
     public Transform arrow;
     public void Update()
     {
@@ -14,6 +18,7 @@ public class GPSController : MonoBehaviour
         Vector3 directionToPoint1 = GPSPOINT_1.position - transform.position;
         float angleToPoint1 = Vector3.SignedAngle(transform.forward, directionToPoint1, Vector3.up);
         arrow.localRotation = Quaternion.Euler(0, 0, angleToPoint1);
-
+        float t = Mathf.Clamp01(distanceToPoint1);
+        pointMaterial.color = Color.Lerp(pointColor * emmisionStrength, noPointColor ,t);
     }
 }
