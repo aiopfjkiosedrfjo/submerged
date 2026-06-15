@@ -64,7 +64,7 @@ public class npcDetector : MonoBehaviour
                 uiManager.Instance.closeAllUI();
                 UIENABLED = false;
             }
-            else if (interactable)
+            else if (interactable && targettedNPC != null)
             {
                 if (targettedNPC.layer == LayerMask.NameToLayer("NPC"))
                 {

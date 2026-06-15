@@ -121,9 +121,8 @@ public class Player : MonoBehaviour
     {
         if (isRidingBoat)
         {
-            rb.linearVelocity = Vector3.zero;
             rb.MovePosition(boatTeleport.position);  
-            rb.isKinematic = true;    
+            rb.isKinematic = true; // Disable physics while riding the boat
             return;
         }
         MovePlayer();
@@ -133,7 +132,7 @@ public class Player : MonoBehaviour
 
     void MovePlayer()
     {
-        rb.isKinematic = false;
+        rb.isKinematic = false; // Ensure physics is enabled when not riding the boat
         Vector3 movementDirection = (orientation.forward * moveForward + orientation.right * moveHorizontal).normalized;
         Vector3 targetVelocity = movementDirection * MoveSpeed;
 

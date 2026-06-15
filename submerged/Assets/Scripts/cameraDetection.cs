@@ -10,6 +10,7 @@ using UnityEngine.UI;
 public class cameraDetection : MonoBehaviour
 {
     public float zoomLevel;
+    public float fishLimit = 10;
     public bool flashActive = false;
     public TextMeshPro flashText;
     public GameObject volumetricLight;
@@ -25,6 +26,7 @@ public class cameraDetection : MonoBehaviour
     public Animator animator;
     public int count = 0;
     public TextMeshProUGUI photoCardInfo;
+    public TextMeshProUGUI fishCountDisplay;
     public AudioClip cameraShutter;
     public AudioSource audioSource;
     public Material flashLight;
@@ -90,6 +92,7 @@ public class cameraDetection : MonoBehaviour
             flashActive = false;
             flashText.text = "OFF";
         }
+        fishCountDisplay.text = $"{count}/{fishLimit} ";
         CameraSettings();
         
     }
@@ -148,7 +151,7 @@ public class cameraDetection : MonoBehaviour
                 if (((1 << rend.gameObject.layer) & targetLayer) != 0)
                 {
                     count++;
-                    if (count > 10) break;
+                    if (count > fishLimit) break;
                     game.GetComponent<Transform>();
                     distanceFromCamera = Vector3.Distance(photoCamera.transform.position, game.transform.position);
                     multiplier = gameManager.instance.AddMultiplier(distanceFromCamera);

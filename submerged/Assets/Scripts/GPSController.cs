@@ -18,7 +18,8 @@ public class GPSController : MonoBehaviour
         Vector3 directionToPoint1 = GPSPOINT_1.position - transform.position;
         float angleToPoint1 = Vector3.SignedAngle(transform.forward, directionToPoint1, Vector3.up);
         arrow.localRotation = Quaternion.Euler(0, 0, angleToPoint1);
-        float t = Mathf.Clamp01(distanceToPoint1);
-        pointMaterial.color = Color.Lerp(pointColor * emmisionStrength, noPointColor ,t);
+        float t = Mathf.Clamp01(distanceToPoint1 / 10f);
+        Color currentColor = Color.Lerp(noPointColor, pointColor, t);
+        pointMaterial.SetColor("_EmissionColor", currentColor * emmisionStrength);
     }
 }
