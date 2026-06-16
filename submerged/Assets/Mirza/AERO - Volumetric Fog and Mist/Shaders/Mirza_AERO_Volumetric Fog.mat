@@ -109,7 +109,7 @@ Material:
     - _Self_Shadow_Power: 2
     - _Self_Shadow_Remap_Max: 0.8
     - _Self_Shadow_Remap_Min: 0.2
-    - _Steps: 10
+    - _Steps: 3
     m_Colors:
     - _Colour: {r: 1, g: 1, b: 1, a: 1}
     - _Height_Gradient_Colour_Bottom: {r: 1, g: 1, b: 1, a: 1}
