@@ -25,24 +25,24 @@ Material:
     m_TexEnvs:
     - _FogNoise:
         m_Texture: {fileID: 11700000, guid: c6a80adabc2ee4b4bbd305edef74a3d0, type: 3}
-        m_Scale: {x: 0.1, y: 0.1}
+        m_Scale: {x: 1.21, y: 0.1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _DeepHeight: -273
     - _Density: 0.08
-    - _DensityMultiplier: 0.23945726
-    - _DensityThreshold: 0.05
+    - _DensityMultiplier: 0.03
+    - _DensityThreshold: 0.134
     - _FogHeightGradient: 1.08
     - _LightScattering: 0.054
-    - _MaxDistance: 235.0312
-    - _NoiseOffset: 0.53
-    - _NoiseTiling: 0.1
-    - _StepSize: 10
+    - _MaxDistance: 235.03117
+    - _NoiseOffset: -8.04
+    - _NoiseTiling: 0.89
+    - _StepSize: 10.1
     - _SurfaceHeight: -48.7
     m_Colors:
     - _BottomColor: {r: 0, g: 0.0012320572, b: 0.122641504, a: 1}
-    - _Color: {r: 0.0035613377, g: 0.047284093, b: 0.21372439, a: 0}
+    - _Color: {r: 0.003561337, g: 0.04728409, b: 0.21372437, a: 0}
     - _FogBottomColor: {r: 0, g: 0, b: 0.1981132, a: 1}
     - _FogTopColor: {r: 0, g: 0.13725495, b: 1, a: 1}
     - _LightContribution: {r: 1, g: 1, b: 1, a: 1}

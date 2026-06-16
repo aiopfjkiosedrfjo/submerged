@@ -3,6 +3,7 @@ using UnityEngine;
 public class globalFlock : MonoBehaviour
 {
     public GameObject fishPrefab;
+    public GameObject delaidPrefab;
     public static int VERTICALtankSize = 20;
     public static int HORIZONTALtankSize = 50;
     static public int numFish = 20;
@@ -15,6 +16,7 @@ public class globalFlock : MonoBehaviour
     {
         tankCenter = transform.position;
         createFish();
+
     }
 
     // Update is called once per frame
@@ -32,10 +34,10 @@ public class globalFlock : MonoBehaviour
         for (int i = 0; i < numFish; i++)
         {
             Vector3 pos = tankCenter + new Vector3(Random.Range(-HORIZONTALtankSize, HORIZONTALtankSize)
-                                                    , Random.Range(-VERTICALtankSize, VERTICALtankSize)
+                                                    , Random.Range(-VERTICALtankSize, VERTICALtankSize) 
                                                     , Random.Range(-HORIZONTALtankSize, HORIZONTALtankSize));
-
-            allFish[i] = Instantiate(fishPrefab, pos, Quaternion.identity);
+            GameObject prefabToSpawn = (i < numFish / 2) ? fishPrefab : delaidPrefab;
+            allFish[i] = Instantiate(prefabToSpawn, pos, Quaternion.identity);
         }
         
     }

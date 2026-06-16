@@ -10,7 +10,6 @@ public class water : MonoBehaviour
     public Player playerScript;
     public TextMeshProUGUI oxygenDisplay;
     public Transform player;
-    public Light directionalLight;
     public float oxygenLevel = 60f;
     public float seaLevel = -13.85f;
     public float buoyancyForce = 10f;
@@ -50,8 +49,7 @@ public class water : MonoBehaviour
             depthDisplay.text = "Depth: " + depth.ToString("F1") + "m";
             float t = Mathf.Clamp01(depth / maxDepth);
             VolumetricFog.color = Color.Lerp(colorAtSurface, colorAtDepth, t);
-            directionalLight.intensity = Mathf.Lerp(2, 0.01f, t);
-            VolumetricFog.SetFloat("_DensityMultiplier", Mathf.Lerp(0.1f, 0.3f, t));
+            VolumetricFog.SetFloat("_DensityMultiplier", Mathf.Lerp(0.01f, 0.2f, t));
             VolumetricFog.SetFloat("_MaxDistance", Mathf.Lerp(500f, 120f, t));
             timer1 += Time.deltaTime;
             oxygenLevel = Mathf.Max(0, oxygenLevel - Time.deltaTime);
@@ -73,7 +71,6 @@ public class water : MonoBehaviour
             oxygenLevel = 60f;
             oxygenDisplay.text = "Oxygen: " + oxygenLevel.ToString("F0");
             VolumetricFog.SetFloat("_DensityMultiplier", 0.03f);
-            directionalLight.intensity = 3;
             depthDisplay.text = "Depth: 0m";
         }
         if (oxygenLevel <= 0){

@@ -10,6 +10,8 @@ using UnityEngine.UI;
 public class cameraDetection : MonoBehaviour
 {
     public float zoomLevel;
+    public float maxZoom = 60;
+    public float minZoom = 15;
     public float fishLimit = 10;
     public bool flashActive = false;
     public TextMeshPro flashText;
@@ -118,11 +120,11 @@ public class cameraDetection : MonoBehaviour
         float scroll = Input.mouseScrollDelta.y;
         if (scroll > 0)
         {
-            photoCamera.fieldOfView = Mathf.Max(15, photoCamera.fieldOfView - 5);
+            photoCamera.fieldOfView = Mathf.Max(minZoom, photoCamera.fieldOfView - 5);
         }
         else if (scroll < 0)
         {
-            photoCamera.fieldOfView = Mathf.Min(60, photoCamera.fieldOfView + 5);
+            photoCamera.fieldOfView = Mathf.Min(maxZoom, photoCamera.fieldOfView + 5);
         }
         
 
