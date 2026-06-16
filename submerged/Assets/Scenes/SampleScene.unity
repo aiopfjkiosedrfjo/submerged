@@ -6856,6 +6856,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 467917500}
   m_Mesh: {fileID: -5495902117074765545, guid: 08fe90e203a0b6540b2789284da73cc4, type: 3}
+--- !u!1 &480797156
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 480797157}
+  m_Layer: 0
+  m_Name: bookCameraPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &480797157
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 480797156}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.68989575, y: 0.7239088, z: -0, w: 0}
+  m_LocalPosition: {x: 0.030007938, y: -1.67, z: 1.1}
+  m_LocalScale: {x: 11.477473, y: 1.2165277, z: 2.5140018}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3745622628245252588}
+  m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
 --- !u!1 &488960362
 GameObject:
   m_ObjectHideFlags: 0
@@ -24222,6 +24253,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::playercam
   mouseSensitivity: 100
   orientation: {fileID: 1830739916}
+  isInteracting: 0
+  interactingObject: {fileID: 832149484639840006}
+  bookViewPos: {fileID: 480797157}
+  duration: 2
+  hasReachedPosition: 0
 --- !u!1 &882754609
 GameObject:
   m_ObjectHideFlags: 0
@@ -41031,7 +41067,7 @@ Transform:
   m_GameObject: {fileID: 1721689516}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -292.9, y: 43.5, z: -810}
+  m_LocalPosition: {x: -15.94, y: 4.77, z: 16.48}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -48055,10 +48091,11 @@ Transform:
   m_GameObject: {fileID: 832149484639840006}
   serializedVersion: 2
   m_LocalRotation: {x: -0.5118808, y: 0.48782998, z: 0.48782998, w: 0.5118808}
-  m_LocalPosition: {x: 0.13190475, y: 2.205404, z: 0.17557427}
+  m_LocalPosition: {x: 0.2018, y: 2.205404, z: 0.177}
   m_LocalScale: {x: 0.19146362, y: 0.061948393, z: 1.46143}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 480797157}
   m_Father: {fileID: 1979339545}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &3782810302039971494
