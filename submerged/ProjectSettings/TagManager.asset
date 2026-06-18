@@ -8,6 +8,7 @@ TagManager:
   - NPC2
   - NPC
   - Environment
+  - canPickUp
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - INTERACTABLE_OBJECT
   - mainCamera1
   - Came
-  - 
+  - holdLayer
   - 
   - 
   - 

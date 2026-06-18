@@ -4,6 +4,7 @@ public class playercam : MonoBehaviour
 {
     public float mouseSensitivity = 100f;
     public Transform orientation;
+    public float originalValueMouseSensitivity;
     public bool isInteracting = false;
     public GameObject interactingObject;
     public Transform bookViewPos;
@@ -16,12 +17,15 @@ public class playercam : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        originalValueMouseSensitivity = mouseSensitivity;
     }
 
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.J)){
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = !Cursor.visible;
             isInteracting = !isInteracting;
             elapsedTime = 0f;
             hasReachedPosition = false;
