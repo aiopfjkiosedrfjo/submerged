@@ -9,6 +9,7 @@ TagManager:
   - NPC
   - Environment
   - canPickUp
+  - pathFindingNodes
   layers:
   - Default
   - TransparentFX
