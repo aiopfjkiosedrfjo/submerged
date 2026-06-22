@@ -4542,7 +4542,6 @@ GameObject:
   - component: {fileID: 309282431}
   - component: {fileID: 309282430}
   - component: {fileID: 309282433}
-  - component: {fileID: 309282432}
   m_Layer: 8
   m_Name: Cube.010 (2)
   m_TagString: NPC2
@@ -4627,24 +4626,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 309282428}
   m_Mesh: {fileID: 8385836491182413749, guid: 2baa0a00e00c26649aa86bdca0581032, type: 3}
---- !u!114 &309282432
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 309282428}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Outline
-  outlineMode: 0
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
-  outlineWidth: 2
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
 --- !u!136 &309282433
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -16693,7 +16674,6 @@ GameObject:
   - component: {fileID: 696655812}
   - component: {fileID: 696655811}
   - component: {fileID: 696655815}
-  - component: {fileID: 696655816}
   m_Layer: 8
   m_Name: NPC1
   m_TagString: NPC
@@ -16808,24 +16788,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a415ce5fb7489642aa6c8c24d1ac2c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Interactor
---- !u!114 &696655816
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 696655810}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Outline
-  outlineMode: 1
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
-  outlineWidth: 5.05
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
 --- !u!4 &698287031 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 729cb2c2d46b77a4fbfdced621c95422, type: 3}
