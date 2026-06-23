@@ -65,7 +65,7 @@ Material:
     - _Blur_Texture_Blend: 0.151
     - _Blur_Texture_Remap_Max: 0.973
     - _Blur_Texture_Remap_Min: 0.914
-    - _Density: 0.239
+    - _Density: 0.278
     - _ENABLE_ADDITIONAL_LIGHTS: 1
     - _ENABLE_ADDITIONAL_LIGHT_SHADOWS: 1
     - _ENABLE_AMBIENT_LIGHT: 1
@@ -104,12 +104,12 @@ Material:
     - _Height_Mask_Texture_Power: 1
     - _Main_Light_Self_Shadow_Distance: 4
     - _Main_Light_Self_Shadow_Steps: 4
-    - _Max_Distance: 293.4
+    - _Max_Distance: 180.2
     - _OUTPUT: 0
     - _Self_Shadow_Power: 2
     - _Self_Shadow_Remap_Max: 0.8
     - _Self_Shadow_Remap_Min: 0.2
-    - _Steps: 9
+    - _Steps: 22
     m_Colors:
     - _Colour: {r: 1, g: 1, b: 1, a: 1}
     - _Height_Gradient_Colour_Bottom: {r: 1, g: 1, b: 1, a: 1}

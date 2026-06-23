@@ -1,6 +1,5 @@
 using System.Collections.Generic;
-using System.Threading;
-using JetBrains.Annotations;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -10,7 +9,7 @@ public class water : MonoBehaviour
     public Player playerScript;
     public TextMeshProUGUI oxygenDisplay;
     public Transform player;
-    public float oxygenLevel = 60f;
+    public float oxygenLevel = 65f;
     public float seaLevel = -13.85f;
     public float buoyancyForce = 10f;
     public bool inWater = false;
@@ -30,10 +29,13 @@ public class water : MonoBehaviour
     public AudioClip waterExit;
     public TextMeshProUGUI depthDisplay;
     public Material VolumetricFog;
+    public CanvasGroup canvasGroup;
+    public float gracePeriodFadeOut = 4f;
     private bool waterSplashHasPlayed = false; 
     private bool waterExitHasPlayed = false; 
     private float nextAmbienceTime;
     public float depth;
+    private bool HasTriggeredFadeOut = false;
     public float maxDepth = 700f; // Define the maximum depth for clamping
     public void Start()
     {
@@ -45,15 +47,24 @@ public class water : MonoBehaviour
     {
         if (inWater)
         {
+            //DEPTH
             depth = Mathf.Abs(player.position.y - seaLevel);
             depthDisplay.text = "Depth: " + depth.ToString("F1") + "m";
             float t = Mathf.Clamp01(depth / maxDepth);
+
+            //FOG
             VolumetricFog.color = Color.Lerp(colorAtSurface, colorAtDepth, t);
             VolumetricFog.SetFloat("_DensityMultiplier", Mathf.Lerp(0.01f, 0.2f, t));
             VolumetricFog.SetFloat("_MaxDistance", Mathf.Lerp(500f, 120f, t));
+
+            //TIMER
             timer1 += Time.deltaTime;
+
+            //OXYGEN
             oxygenLevel = Mathf.Max(0, oxygenLevel - Time.deltaTime);
-            oxygenDisplay.text = "Oxygen: " + oxygenLevel.ToString("F0");
+            oxygenDisplay.text = "Oxygen: " + (oxygenLevel-5).ToString("F0");
+
+            //SFX
             audioSourceAmbience.clip = waterSound;
             if (!audioSourceAmbience.isPlaying) audioSourceAmbience.Play();
             if (Time.time >= nextAmbienceTime)
@@ -66,17 +77,25 @@ public class water : MonoBehaviour
         }
         else
         {
+            //SFX
             audioSourceAmbience.clip = aboveWaterAmbience;
             if (!audioSourceAmbience.isPlaying) audioSourceAmbience.Play();
+
+            //OXYGEN
             oxygenLevel = 60f;
             oxygenDisplay.text = "Oxygen: " + oxygenLevel.ToString("F0");
+            
+            //FOG
+            VolumetricFog.SetFloat("_MaxDistance", 120f);
             VolumetricFog.SetFloat("_DensityMultiplier", 0.03f);
+
+            //Depth Text
             depthDisplay.text = "Depth: 0m";
         }
         if (oxygenLevel <= 0){
             playerScript.Die();
         }
-
+        OxygenGracePeriod();
         CheckSanityMeter();
     }
     public void CheckSanityMeter()
@@ -122,4 +141,33 @@ public class water : MonoBehaviour
             audioSourceAmbience.Stop();
         }
     }
+    public void OxygenGracePeriod()
+    {
+        if(oxygenLevel <= 5 && !HasTriggeredFadeOut)
+        {
+            StartCoroutine(TriggerFadeOut());
+            HasTriggeredFadeOut = true;
+        }
+        else
+        {
+            canvasGroup.alpha = 0f;
+        }
+    }
+    public IEnumerator TriggerFadeOut()
+    {
+        float elapsed = 0f;
+
+        while (elapsed < gracePeriodFadeOut)
+        {
+            elapsed += Time.deltaTime;
+
+            float t = elapsed / gracePeriodFadeOut;
+            canvasGroup.alpha = Mathf.Lerp(0f, 1.2f, t);
+
+            yield return null;
+        }
+
+        canvasGroup.alpha = 1f; 
+    }
+
 }
