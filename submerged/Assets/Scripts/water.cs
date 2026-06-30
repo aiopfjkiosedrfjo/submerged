@@ -54,7 +54,7 @@ public class water : MonoBehaviour
 
             //FOG
             VolumetricFog.color = Color.Lerp(colorAtSurface, colorAtDepth, t);
-            VolumetricFog.SetFloat("_DensityMultiplier", Mathf.Lerp(0.01f, 0.2f, t));
+            VolumetricFog.SetFloat("_DensityMultiplier", Mathf.Lerp(0.01f, 0.1f, t));
             VolumetricFog.SetFloat("_MaxDistance", Mathf.Lerp(500f, 120f, t));
 
             //TIMER

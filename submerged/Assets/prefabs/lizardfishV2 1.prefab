@@ -384,11 +384,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 851a9c5cf20cbd847aace087c68a6116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  screech: {fileID: 8300000, guid: 306f8dcef36bf20488bfa92e42ab7604, type: 3}
+  screech: {fileID: 8300000, guid: 666703e4ced5442429d9eb9bd5293d0a, type: 3}
   aud: {fileID: -1612207399986811469}
   chasingPlayer: 1
-  speed: 40
-  rotationSpeed: 20
+  speed: 80
+  rotationSpeed: 30
 --- !u!82 &-1612207399986811469
 AudioSource:
   m_ObjectHideFlags: 0
@@ -446,7 +446,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.822
+      value: 0.66
       inSlope: 0
       outSlope: 0
       tangentMode: 0
