@@ -25,6 +25,7 @@ public class cameraDetection : MonoBehaviour
     public Renderer[] photoTargets;
     public Image[] imageDisplay;
     public LayerMask targetLayer;
+    public LayerMask importantDiscoveriesLayer;
     public Animator animator;
     public int count = 0;
     public TextMeshProUGUI photoCardInfo;
@@ -40,6 +41,7 @@ public class cameraDetection : MonoBehaviour
     private int totalMultiplier;
     private bool isCameraCloseUp = false;
     private Color originalFlashLightIntensity;
+    public List<GameObject> ImportantDiscoveries = new List<GameObject>();
     [System.Serializable]
     public class PhotoData
     {
@@ -165,6 +167,18 @@ public class cameraDetection : MonoBehaviour
                     totalMultiplier += multiplierINT;
                     fishCount++;
                     
+                }
+            }
+        }
+        foreach (GameObject game in ImportantDiscoveries)
+        {
+            Renderer rend = game.GetComponent<MeshRenderer>(); 
+            if (isInView(planes, rend))
+            {
+                if (((1 << rend.gameObject.layer) & importantDiscoveriesLayer) != 0)
+                {
+
+                    Debug.Log("Took a photo of a important thing");
                 }
             }
         }
