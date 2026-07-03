@@ -42,6 +42,13 @@ public class cameraDetection : MonoBehaviour
     private bool isCameraCloseUp = false;
     private Color originalFlashLightIntensity;
     public List<GameObject> ImportantDiscoveries = new List<GameObject>();
+    public List<ImportantDiscoveriesData> ImportantDiscoveriesList = new List<ImportantDiscoveriesData>();
+    [System.Serializable]
+    public class ImportantDiscoveriesData
+    {
+        public Texture2D discoveryImage;
+    }
+    
     [System.Serializable]
     public class PhotoData
     {
@@ -177,8 +184,8 @@ public class cameraDetection : MonoBehaviour
             {
                 if (((1 << rend.gameObject.layer) & importantDiscoveriesLayer) != 0)
                 {
-
-                    Debug.Log("Took a photo of a important thing");
+                    Debug.Log("Important discovery captured!");
+                    StartCoroutine(saveImportantDiscoveryPhoto());
                 }
             }
         }
@@ -267,7 +274,6 @@ public class cameraDetection : MonoBehaviour
         photoCardInfo.text = $"Species: {photodata.speciesName[0]} + {combo}, Multi {multiplier}";
         photoDataList.Add(photodata);
         capturedImages.Add(image);
-
         texture2dToSprite(image);
     }
     void texture2dToSprite(Texture2D image)
@@ -281,6 +287,18 @@ public class cameraDetection : MonoBehaviour
             }
         }
         imageDisplay[0].sprite = Sprite.Create(image, new Rect(0, 0, image.width, image.height), new Vector2(0.5f, 0.5f));
+    }
+    private System.Collections.IEnumerator saveImportantDiscoveryPhoto()
+    {
+        yield return new WaitForEndOfFrame();
+        Texture2D image = new Texture2D(LastImage.width, LastImage.height, TextureFormat.RGBAHalf, false);
+        image.ReadPixels(new Rect(0, 0, LastImage.width, LastImage.height), 0, 0);
+        image.Apply();
+        ImportantDiscoveriesData discovery = new ImportantDiscoveriesData
+        {
+            discoveryImage = image
+        };
+        ImportantDiscoveriesList.Add(discovery);
     }
     bool isInView(Plane[] planes, Renderer renderer)
     {
