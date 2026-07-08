@@ -9,6 +9,11 @@ using UnityEngine.UI;
 
 public class cameraDetection : MonoBehaviour
 {
+    [Header("Notification Data")]
+    [SerializeField] private NotificationSO notificationData;
+    [SerializeField] private NotificationSO cameraErrorNotCloseEnough;
+    [Header("Camera Settings")]
+    [SerializeField] private float importantDiscoveryRange = 20f;
     public float zoomLevel;
     public float maxZoom = 60;
     public float minZoom = 15;
@@ -38,10 +43,14 @@ public class cameraDetection : MonoBehaviour
     private string speciesNametemp;
     private float multiplier;
     private int combo;
+    private bool isImportantDiscovery;
     private int totalMultiplier;
     private bool isCameraCloseUp = false;
     private Color originalFlashLightIntensity;
     public List<GameObject> ImportantDiscoveries = new List<GameObject>();
+    private static readonly int photoHash = Animator.StringToHash("photo");
+    private static readonly int zoomInHash = Animator.StringToHash("cameraCloseUp");
+    private static readonly int zoomOutHash = Animator.StringToHash("cameraCloseUpReturn");
     public List<ImportantDiscoveriesData> ImportantDiscoveriesList = new List<ImportantDiscoveriesData>();
     [System.Serializable]
     public class ImportantDiscoveriesData
@@ -59,6 +68,7 @@ public class cameraDetection : MonoBehaviour
         public List<string> speciesName = new List<string>();
     }
     public List<PhotoData> photoDataList = new List<PhotoData>();
+    public Image[] importantDiscoveriesPhotoUI;
     private int fishCount = 0;
     
     private List<Texture2D> capturedImages = new List<Texture2D>();
@@ -75,7 +85,7 @@ public class cameraDetection : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0) && !isCameraCloseUp)
         {
-            animator.SetTrigger("photo");
+            animator.SetTrigger(photoHash);
         }
         else if (Input.GetKeyDown(KeyCode.Mouse0) && isCameraCloseUp)
         {
@@ -83,13 +93,13 @@ public class cameraDetection : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Mouse1) && !isCameraCloseUp)
         {
-            animator.SetTrigger("cameraCloseUp");
+            animator.SetTrigger(zoomInHash);
             isCameraCloseUp = true;
             CameraCloseUp();
         }
         else if (Input.GetKeyDown(KeyCode.Mouse1) && isCameraCloseUp)
         {
-            animator.SetTrigger("cameraCloseUpReturn");
+            animator.SetTrigger(zoomOutHash);
             isCameraCloseUp = false;
             CameraCloseUpReturn();
         }
@@ -184,15 +194,28 @@ public class cameraDetection : MonoBehaviour
             {
                 if (((1 << rend.gameObject.layer) & importantDiscoveriesLayer) != 0)
                 {
-                    Debug.Log("Important discovery captured!");
-                    StartCoroutine(saveImportantDiscoveryPhoto());
+                    if (Vector3.Distance(photoCamera.transform.position, game.transform.position) < importantDiscoveryRange)
+                    {
+                        if (NotificationManager.Instance != null)
+                        {
+                            NotificationManager.Instance.ShowNotification(notificationData);
+                        }
+                        savePhoto(0, null, 1, true);
+                    }
+                    else
+                    {
+                        if (NotificationManager.Instance != null)
+                        {
+                            NotificationManager.Instance.ShowNotification(cameraErrorNotCloseEnough);
+                        }
+                    }
                 }
             }
         }
         if (fishCount >0)
         {
             int extraPhotos = Mathf.Max(0, fishCount);
-            savePhoto(totalMultiplier, speciesNametemp, extraPhotos);
+            savePhoto(totalMultiplier, speciesNametemp, extraPhotos, false);
         }
     }
     public float CheckifVisible(Vector3 viewportPos, Renderer rend, Camera cam)
@@ -247,59 +270,74 @@ public class cameraDetection : MonoBehaviour
 
         return score * 100f;
     }
-    void savePhoto(int multiplier, string speciesNametemp, int extraPhotos)
+    void savePhoto(int multiplier, string speciesNametemp, int extraPhotos, bool isImportantDiscovery)
     {
         combo =0;
         Texture2D image = new Texture2D(LastImage.width, LastImage.height, TextureFormat.RGBAHalf, false);
         RenderTexture.active = LastImage;
         image.ReadPixels(new Rect(0, 0, LastImage.width, LastImage.height), 0, 0);
         image.Apply();
-        PhotoData photodata = new PhotoData
+        if (!isImportantDiscovery)
         {
-            image = image,
-            distanceFromCamera = distanceFromCamera,
-            multiplierIncrease = multiplier,
-            zoomLevel = zoomLevel
-        };
-        if (extraPhotos > 0)
-            for (int i = 0; i< extraPhotos; i++)
+            PhotoData photodata = new PhotoData
+            {
+                image = image,
+                distanceFromCamera = distanceFromCamera,
+                multiplierIncrease = multiplier,
+                zoomLevel = zoomLevel
+            };
+            if (extraPhotos > 0)
+                for (int i = 0; i< extraPhotos; i++)
+                {
+                    photodata.speciesName.Add(speciesNametemp);
+                    combo++;
+                }
+            else
             {
                 photodata.speciesName.Add(speciesNametemp);
-                combo++;
             }
+            photoCardInfo.text = $"Species: {photodata.speciesName[0]} + {combo}, Multi {multiplier}";
+            photoDataList.Add(photodata);
+        }
         else
         {
-            photodata.speciesName.Add(speciesNametemp);
-        }
-        photoCardInfo.text = $"Species: {photodata.speciesName[0]} + {combo}, Multi {multiplier}";
-        photoDataList.Add(photodata);
-        capturedImages.Add(image);
-        texture2dToSprite(image);
-    }
-    void texture2dToSprite(Texture2D image)
-    {
-        foreach (Image img in imageDisplay)
-        {
-            if (img.sprite == null)
+            ImportantDiscoveriesData discovery = new ImportantDiscoveriesData
             {
-                img.sprite = Sprite.Create(image, new Rect(0, 0, image.width, image.height), new Vector2(0.5f, 0.5f));
-                return;
+                discoveryImage = image
+            };
+            ImportantDiscoveriesList.Add(discovery);
+            texture2dToSprite(image, true);
+        }
+        capturedImages.Add(image);
+        texture2dToSprite(image, false);
+    }
+    void texture2dToSprite(Texture2D image, bool isImportantDiscovery)
+    {
+        if (!isImportantDiscovery)
+        {
+            foreach (Image img in imageDisplay)
+            {
+                if (img.sprite == null)
+                {
+                    img.sprite = Sprite.Create(image, new Rect(0, 0, image.width, image.height), new Vector2(0.5f, 0.5f));
+                    return;
+                }
+            }
+            imageDisplay[0].sprite = Sprite.Create(image, new Rect(0, 0, image.width, image.height), new Vector2(0.5f, 0.5f));
+        }
+        else
+        {
+            foreach (Image img in importantDiscoveriesPhotoUI)
+            {
+                if (img.sprite == null)
+                {
+                    img.sprite = Sprite.Create(image, new Rect(0, 0, image.width, image.height), new Vector2(0.5f, 0.5f));
+                    return;
+                }
             }
         }
-        imageDisplay[0].sprite = Sprite.Create(image, new Rect(0, 0, image.width, image.height), new Vector2(0.5f, 0.5f));
     }
-    private System.Collections.IEnumerator saveImportantDiscoveryPhoto()
-    {
-        yield return new WaitForEndOfFrame();
-        Texture2D image = new Texture2D(LastImage.width, LastImage.height, TextureFormat.RGBAHalf, false);
-        image.ReadPixels(new Rect(0, 0, LastImage.width, LastImage.height), 0, 0);
-        image.Apply();
-        ImportantDiscoveriesData discovery = new ImportantDiscoveriesData
-        {
-            discoveryImage = image
-        };
-        ImportantDiscoveriesList.Add(discovery);
-    }
+
     bool isInView(Plane[] planes, Renderer renderer)
     {
         return GeometryUtility.TestPlanesAABB(planes, renderer.bounds);

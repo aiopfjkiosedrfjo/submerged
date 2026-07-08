@@ -10,6 +10,7 @@ public class water : MonoBehaviour
     public TextMeshProUGUI oxygenDisplay;
     public Transform player;
     public float oxygenLevel = 65f;
+    public float MaxOxygen = 65f;
     public float seaLevel = -13.85f;
     public float buoyancyForce = 10f;
     public bool inWater = false;
@@ -82,7 +83,7 @@ public class water : MonoBehaviour
             if (!audioSourceAmbience.isPlaying) audioSourceAmbience.Play();
 
             //OXYGEN
-            oxygenLevel = 60f;
+            oxygenLevel = MaxOxygen;
             oxygenDisplay.text = "Oxygen: " + oxygenLevel.ToString("F0");
             
             //FOG
@@ -96,16 +97,8 @@ public class water : MonoBehaviour
             playerScript.Die();
         }
         OxygenGracePeriod();
-        CheckSanityMeter();
-    }
-    public void CheckSanityMeter()
-    {
-        if (inWater)
-        {
-            gameManager.instance.sanityLevel -= Time.deltaTime / 5f;
-        }
-    }
 
+    }
     public void OnTriggerEnter(Collider other)
     {
         if (!objectsInside.Contains(other.gameObject) && other.gameObject.CompareTag("Player")) 

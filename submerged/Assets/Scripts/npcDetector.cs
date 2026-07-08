@@ -79,15 +79,6 @@ public class npcDetector : MonoBehaviour
                 UIENABLED = true;
             }
         }
-        if (interactable && !UIENABLED)
-        {
-            uiManager.Instance.showInteractUI();
-        }
-        else
-        {
-            uiManager.Instance.hideInteractUI();
-
-        }
     }
     public void ShowCanvasForNPC(GameObject npc)
     {

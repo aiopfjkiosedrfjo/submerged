@@ -38,4 +38,8 @@ public class gameManager : MonoBehaviour
         if (distanceFromCamera < 30) return 10;
         return 1;
     }
+    public void spawnItem(GameObject itemPrefab, Vector3 position, Quaternion rotation)
+    {
+        Instantiate(itemPrefab, position, rotation);
+    }
 }

@@ -1,15 +1,21 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using NUnit.Framework;
+using Unity.Profiling;
 
 public class uiManager : MonoBehaviour
 {
     public Canvas uiCanvas;
     public Canvas traderUICanvas;
     public Canvas traderUICanvas2;
+    [SerializeField] private NotificationSO notificationSOOxygen;
+    [SerializeField] private water playerOxygen;
+    [SerializeField] private GameObject beaconPrefab;
+    [SerializeField] private Transform spawnPoint;
+    [SerializeField] private Canvas importantDiscoveriesTab;
+    [SerializeField] private Canvas photosTab;
     public TextMeshProUGUI cashDisplay;
-    public TextMeshProUGUI npcDisplay;
-    public npcDetector npcDetector;
     public cameraDetection cameraDetection;
     public static uiManager Instance;
     public float cashToBeUpdated;
@@ -21,15 +27,6 @@ public class uiManager : MonoBehaviour
         traderUICanvas.enabled = false;
         traderUICanvas2.enabled = false;
     }
-
-    public void showInteractUI()
-    {
-        npcDisplay.text = "Press E to interact";
-    }
-    public void hideInteractUI()
-    {
-        npcDisplay.text = "";
-    }
     public void closeAllUI()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -40,7 +37,17 @@ public class uiManager : MonoBehaviour
     }
     public void openInventoryUI()
     {
-        uiCanvas.enabled = true;
+        uiCanvas.enabled = !uiCanvas.enabled;
+        if (uiCanvas.enabled)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
     public void closeInventoryUI()
     {
@@ -96,5 +103,38 @@ public class uiManager : MonoBehaviour
             cashMultiplierIncrease += 0.75f;
             updateCashDisplay();
         }
+    }
+    public void IncreaseOxygenCapacity()
+    {
+            if (gameManager.instance.playerCash >= 100)
+            {
+                gameManager.instance.UpdateCash(-100);
+                playerOxygen.MaxOxygen += 10f;
+                NotificationManager.Instance.ShowNotification(notificationSOOxygen);
+                updateCashDisplay();
+            }
+    }
+    public void GivePlayerBeacon()
+    {
+        if (gameManager.instance.playerCash >= 500)
+        {
+            gameManager.instance.UpdateCash(-500);
+            gameManager.instance.spawnItem(beaconPrefab, spawnPoint.position, spawnPoint.rotation);
+            updateCashDisplay();
+        }
+    }
+    public void SwapInventoryTabImportantDiscoveries()
+    {
+        photosTab.enabled = false;
+        importantDiscoveriesTab.enabled = true;
+    }
+    public void SwapInventoryTabPhotos()
+    {
+        photosTab.enabled = true;
+        importantDiscoveriesTab.enabled = false;
+    }
+    public void ZoomInToPhoto()
+    {
+        
     }
 }

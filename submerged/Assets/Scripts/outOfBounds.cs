@@ -5,6 +5,7 @@ public class outOfBounds : MonoBehaviour
     public water depthCheck;
     public float spawnRange;
     public GameObject fishPrefab;
+    public float spawnDepth = 320f;
     private bool hasSpawnedPredator;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -15,7 +16,7 @@ public class outOfBounds : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (depthCheck.depth > 300)
+        if (depthCheck.depth > spawnDepth)
         {
             SpawnPredator();
         }
