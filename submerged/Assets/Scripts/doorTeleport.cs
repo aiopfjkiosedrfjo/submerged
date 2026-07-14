@@ -3,11 +3,11 @@ using UnityEngine;
 public class doorTeleport : MonoBehaviour
 {
     private Vector3 redRoomTeleport;
-    [SerializeField]private Player player;
-    private void Awake()
+    public Player player;
+    public void SetPlayer(Player target)
     {
-        Player player = FindFirstObjectByType<Player>();
-        Vector3 redRoomTeleport = player.REDROOMteleport.position;
+        player = target;
+        redRoomTeleport = player.REDROOMteleport.position;
     }
 
     private void OnTriggerEnter(Collider other)

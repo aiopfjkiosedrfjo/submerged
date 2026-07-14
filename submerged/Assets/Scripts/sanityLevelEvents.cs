@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-
 public enum SanityState
 {
     Stable,
@@ -20,6 +19,10 @@ public class sanityLevelEvents : MonoBehaviour
     [SerializeField] private GameObject doorPrefab;
     [SerializeField] private Transform doorSpawnPoint;
     [SerializeField] private Player player;
+    [Header("Lady In Red Spawn")]
+    [SerializeField] private List<Transform> spawnLocations = new List<Transform>();
+    [SerializeField] private GameObject ladyInRedPrefab;
+    public float TimeTakenForLadyInRedToDisappear = 10f;
     public float SanityLevel
     {
         get
@@ -69,6 +72,7 @@ public class sanityLevelEvents : MonoBehaviour
                 break;
             case SanityState.Anxious:
                 Debug.Log("Player is feeling anxious.");
+                SpawnLadyInRed();
                 break;
             case SanityState.Hallucinating:
                 Debug.Log("Player is hallucinating.");
@@ -77,7 +81,7 @@ public class sanityLevelEvents : MonoBehaviour
                 Debug.Log("Player is paranoid.");
                 break;
             case SanityState.Insane:
-                SpawnTheDoor(doorSpawnPoint.position, doorSpawnPoint.rotation);
+                SpawnTheDoor(doorSpawnPoint.position, doorSpawnPoint.rotation, player);
                 Debug.Log("Player is insane.");
                 break;
         }
@@ -95,7 +99,7 @@ public class sanityLevelEvents : MonoBehaviour
             sanityLevel += Time.deltaTime / 10f;
         }
     }
-    public void SpawnTheDoor(Vector3 position, Quaternion rotation)
+    public void SpawnTheDoor(Vector3 position, Quaternion rotation, Player player)
     {
         Vector3 rayStart = new Vector3(position.x, position.y + 50f, position.z);
         if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit))
@@ -104,10 +108,35 @@ public class sanityLevelEvents : MonoBehaviour
             {
                 Vector3 spawnPosition = hit.point + Vector3.up * 4f;
                 GameObject door = Instantiate(doorPrefab, spawnPosition, rotation);
+                doorTeleport doorScript = door.GetComponentInChildren<doorTeleport>();
+                doorScript.SetPlayer(player);
                 door.transform.LookAt(new Vector3(player.transform.position.x, door.transform.position.y, player.transform.position.z));
                 door.transform.rotation = Quaternion.FromToRotation(Vector3.up, Vector3.up);
                 door.transform.Rotate(0f, 90f, 0f);
             }
         }
+    }
+    public void SpawnLadyInRed()
+    {
+        float shortestDistance = Mathf.Infinity;
+        Transform closestObject = null;
+        for (int i = 0; i < spawnLocations.Count; i++)
+        {
+            float distanceToPlayer = Vector3.Distance(spawnLocations[i].position, player.gameObject.transform.position);
+            if (distanceToPlayer < shortestDistance)
+            {
+                shortestDistance = distanceToPlayer;
+                closestObject = spawnLocations[i];
+            }
+        }
+        StartCoroutine(InstantiateLadyInRed(closestObject, player));
+    }
+    private System.Collections.IEnumerator InstantiateLadyInRed(Transform spawnPoint, Player player)
+    {
+        GameObject ladyInRed = Instantiate(ladyInRedPrefab, spawnPoint.position, spawnPoint.rotation);
+        ladyInRed ladyInRedScript = ladyInRed.GetComponent<ladyInRed>();
+        ladyInRedScript.PassPlayer(player);
+        yield return new WaitForSeconds(TimeTakenForLadyInRedToDisappear);
+        Destroy(ladyInRed);
     }
 }

@@ -9,12 +9,18 @@ public class uiManager : MonoBehaviour
     public Canvas uiCanvas;
     public Canvas traderUICanvas;
     public Canvas traderUICanvas2;
+    [SerializeField] private Transform chruchTeleportDEBUG;
     [SerializeField] private NotificationSO notificationSOOxygen;
     [SerializeField] private water playerOxygen;
     [SerializeField] private GameObject beaconPrefab;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private Canvas importantDiscoveriesTab;
     [SerializeField] private Canvas photosTab;
+    [Header("Debug")]
+    [SerializeField] private Transform trashPile;
+    [SerializeField] private Player player;
+    [SerializeField] private traderNPC traderNPCScript;
+    [Header("stuff")]
     public TextMeshProUGUI cashDisplay;
     public cameraDetection cameraDetection;
     public static uiManager Instance;
@@ -136,5 +142,26 @@ public class uiManager : MonoBehaviour
     public void ZoomInToPhoto()
     {
         
+    }
+    public void DEBUGTeleportToTrashPileRoom()
+    {
+        player.rb.position = trashPile.position;
+        player.rb.linearVelocity = Vector3.zero;
+
+        traderNPCScript.Hide();
+    }
+    public void DEBUGTeleportToRedRoom()
+    {
+        player.rb.position = player.REDROOMteleport.position;
+        player.rb.linearVelocity = Vector3.zero;
+
+        traderNPCScript.Hide();
+    }
+    public void DEBUGTeleportToHouse()
+    {
+        player.rb.position = chruchTeleportDEBUG.position;
+        player.rb.linearVelocity = Vector3.zero;
+
+        traderNPCScript.Hide();
     }
 }

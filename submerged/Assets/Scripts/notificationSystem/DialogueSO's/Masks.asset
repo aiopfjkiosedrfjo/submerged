@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ce339c89c788e74ebfb2e6ed570821c, type: 3}
+  m_Name: Masks
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueSO
+  dialogueStrings:
+  - In the midst of a chaotic convenience store, an old lady's outburst sparked a
+    chain reaction of violence
+  - nornHi I'm Mike, fueled by rage, reached for their AK47, intent on going on a
+    kamikaze mission to take out everyone
+  - " However, \u0418\u043C\u044F (nornHi I'm Mike) was swiftly taken down by an
+    unknown assailant"
+  - ' But, in a shocking twist, they revived themselves and stumbled upon a time
+    machine'
+  - " \u0418\u043C\u044F, armed with an AA-12, caught wind of the commotion and charged
+    into the store"
+  - "They unloaded 20, 12-gauge rounds into \u0418\u043C\u044F's heart, leaving them
+    demoralized. But, in their haste, \u0418\u043C\u044F was caught and met their
+    demise at the hands of a Makarov-wielding foe"
+  - "Meanwhile, JNORN approached \u0418\u043C\u044F with a seemingly friendly demeanor,
+    only to sock them in the mouth with a concise blow, knocking them out cold."
+  - "However, this brief respite was short-lived, as \u0418\u043C\u044F soon revived
+    once more."
+  - "BNORN, determined to put an end to the chaos, utilized their time machine to
+    travel back to \u0418\u043C\u044F's birth."
+  - "With the power of Aayush's music, they successfully assassinated \u0418\u043C\u044F,
+    but not before succumbing to their own demise."
+  - Yet, they too revived, perpetuating the cycle of violence.
+  - In the end, JNORN emerged victorious, their cunning and brute force proving to
+    be the winning combination
+  - ' As the dust settled, they stood alone, the last one standing in the ravaged
+    convenience store.'

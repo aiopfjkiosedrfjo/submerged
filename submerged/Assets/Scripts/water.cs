@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
+using Unity.VisualScripting;
 
 
 public class water : MonoBehaviour
@@ -34,10 +36,14 @@ public class water : MonoBehaviour
     public float gracePeriodFadeOut = 4f;
     private bool waterSplashHasPlayed = false; 
     private bool waterExitHasPlayed = false; 
+    public bool notInOtherAreas = true;
     private float nextAmbienceTime;
     public float depth;
     private bool HasTriggeredFadeOut = false;
     public float maxDepth = 700f; // Define the maximum depth for clamping
+    [SerializeField] private UniversalRendererData rendererData;
+    [SerializeField] private string featureName = "THE NAME";
+    [SerializeField] private string darkFogName = "DarkFogName";
     public void Start()
     {
         Physics.gravity = originalGravity;
@@ -48,14 +54,15 @@ public class water : MonoBehaviour
     {
         if (inWater)
         {
-            //DEPTH
+            ToggleFogShader(featureName, true);
+            ToggleFogShader(darkFogName, false);
             depth = Mathf.Abs(player.position.y - seaLevel);
             depthDisplay.text = "Depth: " + depth.ToString("F1") + "m";
             float t = Mathf.Clamp01(depth / maxDepth);
 
             //FOG
             VolumetricFog.color = Color.Lerp(colorAtSurface, colorAtDepth, t);
-            VolumetricFog.SetFloat("_DensityMultiplier", Mathf.Lerp(0.01f, 0.1f, t));
+            VolumetricFog.SetFloat("_DensityMultiplier", Mathf.Lerp(0.01f, 0.09f, t));
             VolumetricFog.SetFloat("_MaxDistance", Mathf.Lerp(500f, 120f, t));
 
             //TIMER
@@ -78,9 +85,21 @@ public class water : MonoBehaviour
         }
         else
         {
+            ToggleFogShader(featureName, false);
+            ToggleFogShader(darkFogName, true);
             //SFX
             audioSourceAmbience.clip = aboveWaterAmbience;
             if (!audioSourceAmbience.isPlaying) audioSourceAmbience.Play();
+            if (!notInOtherAreas)
+            {
+                audioSourceAmbience.mute = true;
+            }
+            else
+            {
+                audioSourceAmbience.mute = false;
+            }
+
+
 
             //OXYGEN
             oxygenLevel = MaxOxygen;
@@ -97,6 +116,17 @@ public class water : MonoBehaviour
             playerScript.Die();
         }
         OxygenGracePeriod();
+
+    }
+    public void ToggleFogShader(string shaderName, bool whichToggle)
+    {
+        if (rendererData == null) return;
+        ScriptableRendererFeature feature = rendererData.rendererFeatures.Find(f => f.name == shaderName);
+        if (feature != null)
+        {
+            feature.SetActive(whichToggle);    
+            rendererData.SetDirty();
+        }
 
     }
     public void OnTriggerEnter(Collider other)

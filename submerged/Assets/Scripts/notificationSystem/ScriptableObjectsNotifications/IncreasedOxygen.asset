@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37e72848a4264944ba12c498132e645e, type: 3}
   m_Name: IncreasedOxygen
   m_EditorClassIdentifier: Assembly-CSharp::NotificationSO
-  notificationText: 
-  notificationDuration: 0
+  notificationText: Oxygen increased
+  notificationDuration: 1
   fadeInDuration: 0

@@ -75,12 +75,6 @@ public class Player : MonoBehaviour
         {
             Jump();
         }
-        if (holdingJetpack && jetPackAmount > 0f && !isGrounded && waterScript.inWater)
-        {
-            rb.AddForce(new Vector3(0, jetPackForce, 0), ForceMode.VelocityChange);
-            jetPackAmount -= 1f;
-        }
-        
 
         // Checking when we're on the ground and keeping track of our ground check delay
         if (!isGrounded && groundCheckTimer <= 0f)
@@ -123,6 +117,12 @@ public class Player : MonoBehaviour
             rb.isKinematic = true; // Disable physics while riding the boat
             return;
         }
+        if (holdingJetpack && jetPackAmount > 0f && !isGrounded && waterScript.inWater)
+        {
+            rb.AddForce(new Vector3(0, jetPackForce, 0), ForceMode.VelocityChange);
+            jetPackAmount -= 1f;
+        }
+        
         MovePlayer();
         ApplyJumpPhysics();
 
