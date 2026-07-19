@@ -33,13 +33,14 @@ public class water : MonoBehaviour
     public TextMeshProUGUI depthDisplay;
     public Material VolumetricFog;
     public CanvasGroup canvasGroup;
+    public bool fullyFaded = false;
     public float gracePeriodFadeOut = 4f;
     private bool waterSplashHasPlayed = false; 
     private bool waterExitHasPlayed = false; 
     public bool notInOtherAreas = true;
     private float nextAmbienceTime;
     public float depth;
-    private bool HasTriggeredFadeOut = false;
+    public bool HasTriggeredFadeOut = false;
     public float maxDepth = 700f; // Define the maximum depth for clamping
     [SerializeField] private UniversalRendererData rendererData;
     [SerializeField] private string featureName = "THE NAME";
@@ -168,7 +169,7 @@ public class water : MonoBehaviour
     {
         if(oxygenLevel <= 5 && !HasTriggeredFadeOut)
         {
-            StartCoroutine(TriggerFadeOut());
+            StartCoroutine(TriggerFadeOut(true, gracePeriodFadeOut));
             HasTriggeredFadeOut = true;
         }
         else
@@ -176,21 +177,26 @@ public class water : MonoBehaviour
             canvasGroup.alpha = 0f;
         }
     }
-    public IEnumerator TriggerFadeOut()
+    public void ExternalScriptsTriggerFadeOut(bool isOxygen, float fadeOutTime)
+    {
+        StartCoroutine(TriggerFadeOut(isOxygen, fadeOutTime));
+    }
+    public IEnumerator TriggerFadeOut(bool isOxygen, float fadeOutTime)
     {
         float elapsed = 0f;
 
-        while (elapsed < gracePeriodFadeOut)
+        while (elapsed < fadeOutTime)
         {
             elapsed += Time.deltaTime;
 
-            float t = elapsed / gracePeriodFadeOut;
+            float t = elapsed / fadeOutTime;
             canvasGroup.alpha = Mathf.Lerp(0f, 1.2f, t);
 
             yield return null;
         }
 
         canvasGroup.alpha = 1f; 
+        if (isOxygen) HasTriggeredFadeOut = false;
     }
 
 }
