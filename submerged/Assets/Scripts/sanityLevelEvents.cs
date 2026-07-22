@@ -19,6 +19,7 @@ public class sanityLevelEvents : MonoBehaviour
     [SerializeField] private GameObject doorPrefab;
     [SerializeField] private Transform doorSpawnPoint;
     [SerializeField] private Player player;
+    public float baseChance = 10f;
     [Header("Lady In Red Spawn")]
     [SerializeField] private List<Transform> spawnLocations = new List<Transform>();
     [SerializeField] private GameObject ladyInRedPrefab;
