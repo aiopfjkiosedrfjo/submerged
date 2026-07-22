@@ -8,6 +8,7 @@ public class gameManager : MonoBehaviour
     public static gameManager instance;
     public Player playerScript;
     public uiManager uiManager;
+    public sanityLevelEvents sanityLevelScript;
     public water waterScript;
     public int playerCash = 0;
     public int multiplierIncrease = 0;
