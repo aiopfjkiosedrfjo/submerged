@@ -37116,15 +37116,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 671724c24f2c94ab6ae46beb39a857eb, type: 3}
       propertyPath: m_LocalScale.x
-      value: 405.86447
+      value: 542.2349
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 671724c24f2c94ab6ae46beb39a857eb, type: 3}
       propertyPath: m_LocalScale.y
-      value: 447.87265
+      value: 598.35785
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 671724c24f2c94ab6ae46beb39a857eb, type: 3}
       propertyPath: m_LocalScale.z
-      value: 492.61676
+      value: 658.136
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 671724c24f2c94ab6ae46beb39a857eb, type: 3}
       propertyPath: m_LocalPosition.x
@@ -37132,11 +37132,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 671724c24f2c94ab6ae46beb39a857eb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3
+      value: 8.7
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 671724c24f2c94ab6ae46beb39a857eb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 139.6
+      value: 152.3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 671724c24f2c94ab6ae46beb39a857eb, type: 3}
       propertyPath: m_LocalRotation.w
@@ -46869,7 +46869,7 @@ MonoBehaviour:
   ascendingSpeed: 30
   player: {fileID: 1721689517}
   topPosition: {fileID: 1118725227}
-  sanityLevelScript: {fileID: 0}
+  sanityLevelScript: {fileID: 1354521503}
 --- !u!1 &1043442080
 GameObject:
   m_ObjectHideFlags: 0
@@ -58222,12 +58222,13 @@ MonoBehaviour:
   doorPrefab: {fileID: 6473476944613260818, guid: 8c1aa5ae924b2a045b75a1a5171a96f3, type: 3}
   doorSpawnPoint: {fileID: 1917058358}
   player: {fileID: 1721689517}
-  baseChance: 10
+  baseChance: 0.4
   spawnLocations:
   - {fileID: 473202138}
   - {fileID: 37986773}
   - {fileID: 1898979778}
   ladyInRedPrefab: {fileID: 7288076773357530503, guid: 4b95643f4ef1e884c88cd59f2ea4a4d8, type: 3}
+  trashPileTeleport: {fileID: 379685398}
   TimeTakenForLadyInRedToDisappear: 10
 --- !u!1 &1355226637
 GameObject:
@@ -67588,7 +67589,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1669331235
 RectTransform:
   m_ObjectHideFlags: 0

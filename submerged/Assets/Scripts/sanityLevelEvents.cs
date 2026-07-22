@@ -19,10 +19,12 @@ public class sanityLevelEvents : MonoBehaviour
     [SerializeField] private GameObject doorPrefab;
     [SerializeField] private Transform doorSpawnPoint;
     [SerializeField] private Player player;
-    public float baseChance = 10f;
+    public float baseChance = 0.7f;
     [Header("Lady In Red Spawn")]
     [SerializeField] private List<Transform> spawnLocations = new List<Transform>();
     [SerializeField] private GameObject ladyInRedPrefab;
+    [Header("Trash Room")]
+    [SerializeField] private Transform trashPileTeleport;
     public float TimeTakenForLadyInRedToDisappear = 10f;
     public float SanityLevel
     {
@@ -36,12 +38,6 @@ public class sanityLevelEvents : MonoBehaviour
             CheckSanityTier();
         }
     }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -139,5 +135,10 @@ public class sanityLevelEvents : MonoBehaviour
         ladyInRedScript.PassPlayer(player);
         yield return new WaitForSeconds(TimeTakenForLadyInRedToDisappear);
         Destroy(ladyInRed);
+    }
+    public void TeleportToTrashRoom()
+    {
+        player.rb.linearVelocity = Vector3.zero;
+        player.rb.position = trashPileTeleport.position;
     }
 }

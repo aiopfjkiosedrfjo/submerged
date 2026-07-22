@@ -42,7 +42,6 @@ public class hookAscend : MonoBehaviour, IInteractable
             player.canMove = true;
             
             CheckIfSanityEventOccurs();
-            player.gameObject.transform.position = topPosition.position;
         }
     }
     private void StartLift()
@@ -51,15 +50,16 @@ public class hookAscend : MonoBehaviour, IInteractable
     }
     public void CheckIfSanityEventOccurs()
     {
-        float finalChance = sanityLevelScript.baseChance * (1+ sanityLevelScript.SanityLevel);
+        float finalChance = sanityLevelScript.baseChance * sanityLevelScript.SanityLevel;
         finalChance = Mathf.Clamp(finalChance, 0f, 100f);
-        Debug.Log($"Final Calculated chance : {finalChance}%");
         float rolledNumber = Random.Range(0f, 100f);
-        Debug.Log($"Rolled number : {rolledNumber}%");
         if (rolledNumber <= finalChance)
         {
-            //gameManager.instance.sanityLevelScript.TeleportToTrashRoom();
-            Debug.Log("rolled nice");
+            sanityLevelScript.TeleportToTrashRoom();
+        }
+        else
+        {
+            player.gameObject.transform.position = topPosition.position;
         }
     }
 }
