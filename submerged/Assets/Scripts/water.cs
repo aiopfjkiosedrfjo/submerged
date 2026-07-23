@@ -20,7 +20,7 @@ public class water : MonoBehaviour
     public Color colorAtDepth;
     public Player playerController; // Reference to the player controller script
     private float timer1 = 0f;
-    private Vector3 originalGravity = Physics.gravity;
+    private Vector3 originalGravity = new Vector3(0, -9.81f, 0);
     private Vector3 reducedGravity = new Vector3(0, -1, 0);
     public List<GameObject> objectsInside = new List<GameObject>();
     public AudioClip waterSound; 
@@ -47,6 +47,7 @@ public class water : MonoBehaviour
     [SerializeField] private string darkFogName = "DarkFogName";
     public void Start()
     {
+        Debug.Log(originalGravity);
         Physics.gravity = originalGravity;
         audioSourceAmbience.clip = waterSound;
         
@@ -135,6 +136,7 @@ public class water : MonoBehaviour
         if (!objectsInside.Contains(other.gameObject) && other.gameObject.CompareTag("Player")) 
         {
             objectsInside.Add(other.gameObject);
+            Debug.Log("forsomereasoniminreducedgravity");
             Physics.gravity = reducedGravity; 
             inWater = true;
             if (!waterSplashHasPlayed)

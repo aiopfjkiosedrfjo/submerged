@@ -37,12 +37,12 @@ Material:
     - _LightScattering: 0.054
     - _MaxDistance: 120
     - _NoiseOffset: -8.04
-    - _NoiseTiling: 0.89
+    - _NoiseTiling: 16.1
     - _StepSize: 17
     - _SurfaceHeight: -48.7
     m_Colors:
     - _BottomColor: {r: 0, g: 0, b: 0.01886791, a: 1}
-    - _Color: {r: 0.011389809, g: 0.09571969, b: 0.41394123, a: 0}
+    - _Color: {r: 0.011450149, g: 0.09609302, b: 0.4154845, a: 0}
     - _FogBottomColor: {r: 0, g: 0, b: 0.1981132, a: 1}
     - _FogTopColor: {r: 0, g: 0.13725495, b: 1, a: 1}
     - _LightContribution: {r: 1, g: 1, b: 1, a: 1}
