@@ -16,6 +16,8 @@ public class uiManager : MonoBehaviour
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private Canvas importantDiscoveriesTab;
     [SerializeField] private Canvas photosTab;
+    [SerializeField] private int pageIndex;
+
     [Header("Debug")]
     [SerializeField] private Transform trashPile;
     [SerializeField] private Player player;
@@ -26,6 +28,7 @@ public class uiManager : MonoBehaviour
     public static uiManager Instance;
     public float cashToBeUpdated;
     public float cashMultiplierIncrease;
+    [SerializeField] private GameObject[] pages;
     void Start()
     {
         Instance = this;
@@ -163,5 +166,16 @@ public class uiManager : MonoBehaviour
         player.rb.linearVelocity = Vector3.zero;
 
         traderNPCScript.Hide();
+    }
+    public void ChangePage(int direction)
+    {
+        Debug.Log("BUTTON CLICKED");
+        pageIndex += direction;
+        pageIndex = Mathf.Clamp(pageIndex, 0, pages.Length - 1);
+
+        for(int i = 0; i < pages.Length; i++)
+        {
+            pages[i].SetActive(i == pageIndex);
+        }
     }
 }
