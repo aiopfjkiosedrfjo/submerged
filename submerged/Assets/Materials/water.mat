@@ -44,11 +44,11 @@ Material:
     m_Floats:
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Transparency: 1
-    - _rippleSpeed: 0.2
+    - _Transparency: 5.3
+    - _rippleSpeed: 0.06
     - _waterDensity: 1
     - _waveDensity: 10
-    - _waveScale: 33.6
+    - _waveScale: 22.17
     - _wavesSpeed: 0.005
     m_Colors:
     - _baseColor: {r: 0.025453912, g: 0.14374527, b: 0.41509426, a: 0}
