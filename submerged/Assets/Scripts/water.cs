@@ -41,13 +41,17 @@ public class water : MonoBehaviour
     private float nextAmbienceTime;
     public float depth;
     public bool HasTriggeredFadeOut = false;
-    public float maxDepth = 700f; // Define the maximum depth for clamping
+    public float maxDepth = 700f;
     [SerializeField] private UniversalRendererData rendererData;
     [SerializeField] private string featureName = "THE NAME";
     [SerializeField] private string darkFogName = "DarkFogName";
+    [SerializeField] private string waterDistortionName = "WaterDistortionName";
+    [Header("Particle Systems")]
+    [SerializeField] private ParticleSystem jumpInEffect;
+    [Header("Settings")]
+    [SerializeField] private bool darkFogToggle = false;
     public void Start()
     {
-        Debug.Log(originalGravity);
         Physics.gravity = originalGravity;
         audioSourceAmbience.clip = waterSound;
         
@@ -57,7 +61,8 @@ public class water : MonoBehaviour
         if (inWater)
         {
             ToggleFogShader(featureName, true);
-            ToggleFogShader(darkFogName, false);
+            if(darkFogToggle) ToggleFogShader(darkFogName, false);
+            ToggleFogShader(waterDistortionName, true);
             depth = Mathf.Abs(player.position.y - seaLevel);
             depthDisplay.text = "Depth: " + depth.ToString("F1") + "m";
             float t = Mathf.Clamp01(depth / maxDepth);
@@ -88,7 +93,8 @@ public class water : MonoBehaviour
         else
         {
             ToggleFogShader(featureName, false);
-            ToggleFogShader(darkFogName, true);
+            if (darkFogToggle) ToggleFogShader(darkFogName, true);
+            ToggleFogShader(waterDistortionName, false);
             //SFX
             audioSourceAmbience.clip = aboveWaterAmbience;
             if (!audioSourceAmbience.isPlaying) audioSourceAmbience.Play();
@@ -136,12 +142,11 @@ public class water : MonoBehaviour
         if (!objectsInside.Contains(other.gameObject) && other.gameObject.CompareTag("Player")) 
         {
             objectsInside.Add(other.gameObject);
-            Debug.Log("forsomereasoniminreducedgravity");
             Physics.gravity = reducedGravity; 
             inWater = true;
+            jumpInEffect.Play();
             if (!waterSplashHasPlayed)
             {
-                Debug.Log("Playing splash sound");
                 audioSourceOneShots.PlayOneShot(waterSplash); 
                 waterSplashHasPlayed = true;
             }
@@ -159,7 +164,6 @@ public class water : MonoBehaviour
             timer1 = 0f;
             if (!waterExitHasPlayed)
             {
-                Debug.Log("Playing exit sound");
                 audioSourceOneShots.PlayOneShot(waterExit); 
                 waterExitHasPlayed = true;
             }
