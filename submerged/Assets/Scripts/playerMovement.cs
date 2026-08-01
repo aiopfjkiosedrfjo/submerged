@@ -90,10 +90,9 @@ public class Player : MonoBehaviour
 //      {
 //          rb.linearVelocity = new Vector3(0, anchorForce, 0); // Jump interaction with NPC
 //      }
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            rb.linearVelocity = Vector3.zero;
-            rb.position = REDROOMteleport.position;
+            uiManager.Instance.TogglePauseMenu();
         }
 
 

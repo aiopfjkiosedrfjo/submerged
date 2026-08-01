@@ -6,7 +6,7 @@ using UnityEngine.Rendering.Universal;
 using Unity.VisualScripting;
 
 
-public class water : MonoBehaviour
+public class water : MonoBehaviour, IDataPersistanceInterface
 {
     public Player playerScript;
     public TextMeshProUGUI oxygenDisplay;
@@ -203,6 +203,14 @@ public class water : MonoBehaviour
 
         canvasGroup.alpha = 1f; 
         if (isOxygen) HasTriggeredFadeOut = false;
+    }
+    public void LoadData(gameData data)
+    {
+        MaxOxygen = data.OxygenLevel;
+    }
+    public void SaveData(ref gameData data)
+    {
+        data.OxygenLevel = MaxOxygen;
     }
 
 }

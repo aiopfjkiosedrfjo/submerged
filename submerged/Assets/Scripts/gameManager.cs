@@ -3,7 +3,7 @@ using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class gameManager : MonoBehaviour
+public class gameManager : MonoBehaviour, IDataPersistanceInterface
 {
     public static gameManager instance;
     public Player playerScript;
@@ -92,6 +92,14 @@ public class gameManager : MonoBehaviour
         playerScript.rb.position = playerScript.boatTeleport.position;
         playerScript.rb.linearVelocity = Vector3.zero;
         MaskEvent(true, false);
+    }
+    public void LoadData(gameData data)
+    {
+        playerCash = data.playerCash;
+    }
+    public void SaveData(ref gameData data)
+    {
+        data.playerCash = playerCash;
     }
 
 }

@@ -9,6 +9,7 @@ public class uiManager : MonoBehaviour
     public Canvas uiCanvas;
     public Canvas traderUICanvas;
     public Canvas traderUICanvas2;
+    [SerializeField] private Canvas PauseMenuCanvas;
     [SerializeField] private Transform chruchTeleportDEBUG;
     [SerializeField] private NotificationSO notificationSOOxygen;
     [SerializeField] private water playerOxygen;
@@ -176,6 +177,22 @@ public class uiManager : MonoBehaviour
         for(int i = 0; i < pages.Length; i++)
         {
             pages[i].SetActive(i == pageIndex);
+        }
+    }
+    public void TogglePauseMenu()
+    {
+        PauseMenuCanvas.enabled = !PauseMenuCanvas.enabled;
+        if (PauseMenuCanvas.enabled)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            Time.timeScale = 0f; 
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            Time.timeScale = 1f; 
         }
     }
 }
