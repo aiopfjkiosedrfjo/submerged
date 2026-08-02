@@ -12,6 +12,7 @@ public class gameManager : MonoBehaviour, IDataPersistanceInterface
     public water waterScript;
     public int playerCash = 0;
     public int multiplierIncrease = 0;
+    public int NumberOfDives = 0;
 
     public float sanityLevel = 100f;
     [Header("Mask Event")]
@@ -96,10 +97,14 @@ public class gameManager : MonoBehaviour, IDataPersistanceInterface
     public void LoadData(gameData data)
     {
         playerCash = data.playerCash;
+        NumberOfDives = data.NumberOfDives;
+        HowManyTimesHaveTheyEnteredMaskRoom = data.HowManyTimesHaveTheyEnteredMaskRoom;
     }
     public void SaveData(ref gameData data)
     {
         data.playerCash = playerCash;
+        data.NumberOfDives = NumberOfDives;
+        data.HowManyTimesHaveTheyEnteredMaskRoom = HowManyTimesHaveTheyEnteredMaskRoom;
     }
 
 }

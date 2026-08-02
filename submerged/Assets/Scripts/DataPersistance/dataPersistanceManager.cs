@@ -1,13 +1,18 @@
 using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
-
+public enum DataPersistenceState
+{
+    NewGame,
+    LoadGame,
+}
 public class dataPersistanceManager : MonoBehaviour
 {
     [Header("File Storage Config")]
     [SerializeField] private string fileName;
 
     private gameData _gameData;
+    public DataPersistenceState state;
     public static dataPersistanceManager instance { get; private set;}
     private List<IDataPersistanceInterface> dataPersistanceInterfaces;
     private FileDataHandler dataHandler;
@@ -16,21 +21,33 @@ public class dataPersistanceManager : MonoBehaviour
         this.dataHandler = new FileDataHandler(Application.persistentDataPath, this.fileName);
         Debug.Log(Application.persistentDataPath);
         this.dataPersistanceInterfaces = FindAllDataPersistanceObjects();
-        this._gameData = new gameData();
     }
 
     private void Awake()
     {
-        if (instance != null)
-            Debug.Log("more then one data persistance manaer");
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         instance = this;
+        DontDestroyOnLoad(gameObject);
     }
     public void NewGame()
     {
         this._gameData = new gameData();
+        this.dataPersistanceInterfaces = FindAllDataPersistanceObjects();
     }
     public void LoadGame()
     {
+        if (this._gameData == null)
+        {
+            Debug.LogWarning("No data was found. NewGameStarted");
+            NewGame();
+            return;
+        }
+        this.dataPersistanceInterfaces = FindAllDataPersistanceObjects();
         this._gameData = this.dataHandler.Load();
         if (this._gameData == null)
         {
@@ -43,6 +60,7 @@ public class dataPersistanceManager : MonoBehaviour
     }
     public void SaveGame()
     {
+        this.dataPersistanceInterfaces = FindAllDataPersistanceObjects();
         foreach (IDataPersistanceInterface dataPersistanceInterface in this.dataPersistanceInterfaces)
         {
             dataPersistanceInterface.SaveData(ref this._gameData);

@@ -34,17 +34,14 @@ public class FontChanger : EditorWindow
 
     private void ReplaceFonts()
     {
-        // Find both UI (UGUI) and 3D TextMeshPro components, including inactive ones
         TextMeshProUGUI[] uiTexts = Resources.FindObjectsOfTypeAll<TextMeshProUGUI>();
         TextMeshPro[] worldTexts = Resources.FindObjectsOfTypeAll<TextMeshPro>();
 
         int changedCount = 0;
         Scene activeScene = SceneManager.GetActiveScene();
 
-        // Process UI Text
         foreach (var text in uiTexts)
         {
-            // Filter out project assets/prefabs to only target objects in the current scene
             if (text.gameObject.scene == activeScene)
             {
                 Undo.RecordObject(text, "Replace TMP Font");
@@ -54,7 +51,6 @@ public class FontChanger : EditorWindow
             }
         }
 
-        // Process 3D World Text
         foreach (var text in worldTexts)
         {
             if (text.gameObject.scene == activeScene)
@@ -66,7 +62,6 @@ public class FontChanger : EditorWindow
             }
         }
 
-        // Mark the scene as modified so changes can be saved
         if (changedCount > 0)
         {
             EditorSceneManager.MarkSceneDirty(activeScene);

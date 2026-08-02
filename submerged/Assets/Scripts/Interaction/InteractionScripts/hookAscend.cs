@@ -46,6 +46,7 @@ public class hookAscend : MonoBehaviour, IInteractable
     }
     private void StartLift()
     {
+        gameManager.instance.NumberOfDives ++;
         isBeingLifted = true;
     }
     public void CheckIfSanityEventOccurs()
@@ -55,6 +56,11 @@ public class hookAscend : MonoBehaviour, IInteractable
         float rolledNumber = Random.Range(0f, 100f);
         if (rolledNumber <= finalChance)
         {
+            if (gameManager.instance.NumberOfDives <= 3 && gameManager.instance.HowManyTimesHaveTheyEnteredMaskRoom >=3)
+            {
+                player.gameObject.transform.position = topPosition.position;
+                return;
+            } 
             sanityLevelScript.TeleportToTrashRoom();
         }
         else

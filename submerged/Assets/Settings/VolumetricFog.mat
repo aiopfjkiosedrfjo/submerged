@@ -42,7 +42,7 @@ Material:
     - _SurfaceHeight: -48.7
     m_Colors:
     - _BottomColor: {r: 0, g: 0, b: 0.01886791, a: 1}
-    - _Color: {r: 0.0014322604, g: 0.034111265, b: 0.15927224, a: 0}
+    - _Color: {r: 0.011373119, g: 0.09561643, b: 0.4135144, a: 0}
     - _FogBottomColor: {r: 0, g: 0, b: 0.1981132, a: 1}
     - _FogTopColor: {r: 0, g: 0.13725495, b: 1, a: 1}
     - _LightContribution: {r: 1, g: 1, b: 1, a: 1}

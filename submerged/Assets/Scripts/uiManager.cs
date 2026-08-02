@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine.UI;
 using NUnit.Framework;
 using Unity.Profiling;
-
+using UnityEngine.SceneManagement;
 public class uiManager : MonoBehaviour
 {
     public Canvas uiCanvas;
@@ -18,6 +18,7 @@ public class uiManager : MonoBehaviour
     [SerializeField] private Canvas importantDiscoveriesTab;
     [SerializeField] private Canvas photosTab;
     [SerializeField] private int pageIndex;
+    [SerializeField] private string MainMenuSceneName;
 
     [Header("Debug")]
     [SerializeField] private Transform trashPile;
@@ -194,5 +195,19 @@ public class uiManager : MonoBehaviour
             Cursor.visible = false;
             Time.timeScale = 1f; 
         }
+    }
+    public void QuitGame()
+    {
+        Application.Quit();
+
+    }
+    public void ReturnToMainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(this.MainMenuSceneName);
+    }
+    public void SaveGame()
+    {
+        dataPersistanceManager.instance.SaveGame();
     }
 }
