@@ -24,9 +24,9 @@ public class mainMenuManager : MonoBehaviour
     }
     public void LoadGame()
     {
-        
-            dataPersistanceManager.instance.state = DataPersistenceState.LoadGame;
-            SceneManager.LoadScene(this.sceneToLoadName);
+
+        dataPersistanceManager.instance.state = DataPersistenceState.LoadGame;
+        SceneManager.LoadScene(this.sceneToLoadName);
     }
     public void SetState(MenuState state)
     {

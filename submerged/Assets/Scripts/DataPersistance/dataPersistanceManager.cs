@@ -41,17 +41,13 @@ public class dataPersistanceManager : MonoBehaviour
     }
     public void LoadGame()
     {
+        this.dataPersistanceInterfaces = FindAllDataPersistanceObjects();
+        this._gameData = this.dataHandler.Load();
         if (this._gameData == null)
         {
             Debug.LogWarning("No data was found. NewGameStarted");
             NewGame();
             return;
-        }
-        this.dataPersistanceInterfaces = FindAllDataPersistanceObjects();
-        this._gameData = this.dataHandler.Load();
-        if (this._gameData == null)
-        {
-            Debug.Log("no data to load");
         }
         foreach (IDataPersistanceInterface dataPersistanceInterface in this.dataPersistanceInterfaces)
         {
@@ -71,9 +67,5 @@ public class dataPersistanceManager : MonoBehaviour
     {
         IEnumerable<IDataPersistanceInterface> dataPersistanceObjects = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).OfType<IDataPersistanceInterface>();
         return new List<IDataPersistanceInterface>(dataPersistanceObjects);
-    }
-    private void OnApplicationQuit()
-    {
-        SaveGame();
     }
 }
