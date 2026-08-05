@@ -4,7 +4,7 @@ public class GameLoader : MonoBehaviour
 {
     private void Start()
     {
-        // Delay excecuting load game until main scene has loaded
+        if (dataPersistanceManager.instance == null) return;
         if (dataPersistanceManager.instance.state == DataPersistenceState.NewGame)
         {
             if (dataPersistanceManager.instance == null)
