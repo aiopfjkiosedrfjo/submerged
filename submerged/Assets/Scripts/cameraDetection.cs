@@ -14,6 +14,7 @@ public class cameraDetection : MonoBehaviour
     [SerializeField] private NotificationSO cameraErrorNotCloseEnough;
     [Header("Camera Settings")]
     [SerializeField] private float importantDiscoveryRange = 20f;
+    [SerializeField] private float cameraShutterPauseDuration = 1f;
     public float zoomLevel;
     public float maxZoom = 60;
     public float minZoom = 15;
@@ -36,6 +37,7 @@ public class cameraDetection : MonoBehaviour
     public TextMeshProUGUI photoCardInfo;
     public TextMeshProUGUI fishCountDisplay;
     public AudioClip cameraShutter;
+    [SerializeField] private AudioClip clunkSFX;
     public AudioSource audioSource;
     public Material flashLight;
     public uiAnimations uiAnimations;
@@ -43,9 +45,10 @@ public class cameraDetection : MonoBehaviour
     private string speciesNametemp;
     private float multiplier;
     private int combo;
-    private bool isImportantDiscovery;
     private int totalMultiplier;
     private bool isCameraCloseUp = false;
+    private float elapsedTime = 0f;
+    private bool OverheatOver = true;
     private Color originalFlashLightIntensity;
     public List<GameObject> ImportantDiscoveries = new List<GameObject>();
     private static readonly int photoHash = Animator.StringToHash("photo");
@@ -72,37 +75,66 @@ public class cameraDetection : MonoBehaviour
     private int fishCount = 0;
     
     private List<Texture2D> capturedImages = new List<Texture2D>();
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField]
+    private List<flock> fishList = new List<flock>();
     void Start()
     {
         volumetricLight.SetActive(false);
         flashText.text = "OFF";
         photoCamera.targetTexture = photoTexture;
         originalFlashLightIntensity = flashLight.GetColor("_EmissionColor");
-        
+    }
+    public void RegisterFish(flock fish)
+    {
+        if (!fishList.Contains(fish))
+        {
+            fishList.Add(fish);
+        }
+    }
+    public void UnregisterFish(flock fish)
+    {
+        if (fishList.Contains(fish))
+        {
+            fishList.Remove(fish);
+        }
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && !isCameraCloseUp)
+    if (Input.GetKeyDown(KeyCode.Mouse0) && OverheatOver)
+    {
+        OverheatOver = false;
+        if (!isCameraCloseUp)
         {
             animator.SetTrigger(photoHash);
         }
-        else if (Input.GetKeyDown(KeyCode.Mouse0) && isCameraCloseUp)
+        else
         {
             takePhoto();
-        }
-        if (Input.GetKeyDown(KeyCode.Mouse1) && !isCameraCloseUp)
-        {
-            animator.SetTrigger(zoomInHash);
-            isCameraCloseUp = true;
-            CameraCloseUp();
-        }
-        else if (Input.GetKeyDown(KeyCode.Mouse1) && isCameraCloseUp)
-        {
             animator.SetTrigger(zoomOutHash);
             isCameraCloseUp = false;
+        }
+        StartCoroutine(Overheat());
+    }
+    else if (Input.GetKeyDown(KeyCode.Mouse0) && !OverheatOver)
+    {
+        audioSource.PlayOneShot(clunkSFX);
+    }
+
+    if (Input.GetKeyDown(KeyCode.Mouse1))
+    {
+        isCameraCloseUp = !isCameraCloseUp;
+
+        if (isCameraCloseUp)
+        {
+            animator.SetTrigger(zoomInHash);
+            CameraCloseUp();
+        }
+        else
+        {
+            animator.SetTrigger(zoomOutHash);
             CameraCloseUpReturn();
         }
+    }
         if (Input.GetKeyDown(KeyCode.Q) && !flashActive)
         {
             flashActive = true;
@@ -163,28 +195,25 @@ public class cameraDetection : MonoBehaviour
         uiAnimations.CapturedImageAnimation();
 
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(photoCamera);
-        foreach (GameObject game in globalFlock.allFish)
+        foreach (flock fish in fishList)
         {
-            Renderer rend = game.GetComponentInChildren<SkinnedMeshRenderer>();
+            Renderer rend = fish.GetComponentInChildren<SkinnedMeshRenderer>();
+
+            if (rend == null || fish.outline == null)
+                continue;
+
             if (isInView(planes, rend))
             {
-                
+                fish.outline.enabled = true;
+
                 if (((1 << rend.gameObject.layer) & targetLayer) != 0)
                 {
-                    count++;
-                    if (count > fishLimit) break;
-                    game.GetComponent<Transform>();
-                    distanceFromCamera = Vector3.Distance(photoCamera.transform.position, game.transform.position);
-                    multiplier = gameManager.instance.AddMultiplier(distanceFromCamera);
-                    speciesNametemp = LayerMask.LayerToName(rend.gameObject.layer);
-                    Vector3 viewportPos = photoCamera.WorldToViewportPoint(game.transform.position);
-                    multiplier *= CheckifVisible(viewportPos, rend, photoCamera)/10;
-                    game.SetActive(false);
-                    int multiplierINT = Mathf.RoundToInt(multiplier);
-                    totalMultiplier += multiplierINT;
-                    fishCount++;
-                    
+                    CalculateStuff(rend, fish.gameObject);
                 }
+            }
+            else
+            {
+                fish.outline.enabled = false;
             }
         }
         foreach (GameObject game in ImportantDiscoveries)
@@ -216,6 +245,7 @@ public class cameraDetection : MonoBehaviour
         {
             int extraPhotos = Mathf.Max(0, fishCount);
             savePhoto(totalMultiplier, speciesNametemp, extraPhotos, false);
+            StartCoroutine(photoAnimation());
         }
     }
     public float CheckifVisible(Vector3 viewportPos, Renderer rend, Camera cam)
@@ -341,6 +371,31 @@ public class cameraDetection : MonoBehaviour
     bool isInView(Plane[] planes, Renderer renderer)
     {
         return GeometryUtility.TestPlanesAABB(planes, renderer.bounds);
+    }
+    
+    private void CalculateStuff(Renderer rend, GameObject game)
+    {
+        count++;
+        game.GetComponent<Transform>();
+        distanceFromCamera = Vector3.Distance(photoCamera.transform.position, game.transform.position);
+        multiplier = gameManager.instance.AddMultiplier(distanceFromCamera);
+        speciesNametemp = LayerMask.LayerToName(rend.gameObject.layer);
+        Vector3 viewportPos = photoCamera.WorldToViewportPoint(game.transform.position);
+        multiplier *= CheckifVisible(viewportPos, rend, photoCamera)/10;
+        int multiplierINT = Mathf.RoundToInt(multiplier);
+        totalMultiplier += multiplierINT;
+        fishCount++;  
+    }
+    public System.Collections.IEnumerator photoAnimation()
+    {
+        Time.timeScale = 0f;
+        yield return new WaitForSecondsRealtime(cameraShutterPauseDuration);
+        Time.timeScale = 1f;
+    }
+    private System.Collections.IEnumerator Overheat()
+    {
+        yield return new WaitForSecondsRealtime(cameraShutterPauseDuration);
+        OverheatOver = true;
     }
 
 }

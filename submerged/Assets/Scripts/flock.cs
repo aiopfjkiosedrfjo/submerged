@@ -19,9 +19,13 @@ public class flock : MonoBehaviour
     bool AllFishLookingAtPlayerTriggered = false;
     public bool lookingAtPlayer = false;
     public globalFlock globalFlockScript;
+    public Outline outline;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        cameraDetection cameraScript = FindFirstObjectByType<cameraDetection>();
+        cameraScript.RegisterFish(this);
+        outline = GetComponent<Outline>();
         speed = Random.Range(minimumspeed, maximumspeed);
         sanityLevelEventManager = FindFirstObjectByType<sanityLevelEvents>();
         player = FindFirstObjectByType<Player>().gameObject;
