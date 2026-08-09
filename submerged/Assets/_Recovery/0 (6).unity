@@ -89747,7 +89747,6 @@ MonoBehaviour:
   photoCardInfo: {fileID: 1033089907846273004}
   fishCountDisplay: {fileID: 240765927}
   cameraShutter: {fileID: 8300000, guid: ca5225986c9f90f40b47bd87aeab1740, type: 3}
-  clunkSFX: {fileID: 8300000, guid: 1bbda0414c0aeb34e9a6b03c54403ff4, type: 3}
   audioSource: {fileID: 1536926936}
   flashLight: {fileID: 2100000, guid: 1be94a7d1abb57041804c405c86f10b1, type: 2}
   uiAnimations: {fileID: 4637585176061614561}
