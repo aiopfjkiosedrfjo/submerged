@@ -18,15 +18,15 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 6760a9520f3c2474d92bd493a9310938, type: 2}
     - target: {fileID: -8679921383154817045, guid: 83c5572aa3e5f9746ac25779d1237aa9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -35.52927
+      value: -18.169764
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 83c5572aa3e5f9746ac25779d1237aa9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -254.25
+      value: -101.76
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 83c5572aa3e5f9746ac25779d1237aa9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 45.723774
+      value: 19.923218
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 83c5572aa3e5f9746ac25779d1237aa9, type: 3}
       propertyPath: m_LocalRotation.w
@@ -351,12 +351,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 83c5572aa3e5f9746ac25779d1237aa9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5348864419780417017}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 83c5572aa3e5f9746ac25779d1237aa9, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4294840920301966025}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 83c5572aa3e5f9746ac25779d1237aa9, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 299212804367796959}
   m_SourcePrefab: {fileID: 100100000, guid: 83c5572aa3e5f9746ac25779d1237aa9, type: 3}
 --- !u!1 &3279264990282354305 stripped
 GameObject:
@@ -378,50 +372,4 @@ MonoBehaviour:
   minimumspeed: 2
   maximumspeed: 4
   rotationSpeed: 4
-  fleeingSpeed: 20
   neighbourDistance: 2
-  sanityLevelEventManager: {fileID: 0}
-  player: {fileID: 0}
-  lookingAtPlayer: 0
-  globalFlockScript: {fileID: 0}
-  outline: {fileID: 0}
---- !u!114 &4294840920301966025
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3279264990282354305}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Outline
-  outlineMode: 1
-  outlineColor: {r: 1, g: 0, b: 0, a: 1}
-  outlineWidth: 5
-  precomputeOutline: 1
-  bakeKeys: []
-  bakeValues: []
---- !u!95 &299212804367796959
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3279264990282354305}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 55ddd70a53792d746a673148f2cd77d4, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
