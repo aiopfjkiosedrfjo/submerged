@@ -111,16 +111,9 @@ Shader "Custom/VolumetricFOg"
 
                     if (density > 0)
                     {
-                        Light mainLight = GetMainLight(TransformWorldToShadowCoord(rayPos));
-
                         float3 depthColor = GetDepthColor(rayPos);
 
-                        fogCol.rgb += (
-                            depthColor +
-                            mainLight.color.rgb * _LightContribution.rgb *
-                            henyey_greenstein(dot(rayDir, mainLight.direction), _LightScattering) *
-                            mainLight.shadowAttenuation
-                        ) * density * _StepSize;
+                        fogCol.rgb += depthColor * density * _StepSize;
 
                         transmittance *= exp(-density * _StepSize);
                     }

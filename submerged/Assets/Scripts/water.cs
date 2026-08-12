@@ -49,6 +49,7 @@ public class water : MonoBehaviour, IDataPersistanceInterface
     [Header("Particle Systems")]
     [SerializeField] private ParticleSystem jumpInEffect;
     [Header("Settings")]
+    [SerializeField] private bool waterFogToggle = false;
     [SerializeField] private bool darkFogToggle = false;
     public void Start()
     {
@@ -60,7 +61,7 @@ public class water : MonoBehaviour, IDataPersistanceInterface
     {
         if (inWater)
         {
-            ToggleFogShader(featureName, true);
+            if (waterFogToggle) ToggleFogShader(featureName, true);
             if(darkFogToggle) ToggleFogShader(darkFogName, false);
             ToggleFogShader(waterDistortionName, true);
             depth = Mathf.Abs(player.position.y - seaLevel);
@@ -92,7 +93,7 @@ public class water : MonoBehaviour, IDataPersistanceInterface
         }
         else
         {
-            ToggleFogShader(featureName, false);
+            if (waterFogToggle) ToggleFogShader(featureName, false);
             if (darkFogToggle) ToggleFogShader(darkFogName, true);
             ToggleFogShader(waterDistortionName, false);
             //SFX
