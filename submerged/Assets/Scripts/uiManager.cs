@@ -4,6 +4,8 @@ using UnityEngine.UI;
 using NUnit.Framework;
 using Unity.Profiling;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
+using UnityEngine.Playables;
 public class uiManager : MonoBehaviour
 {
     public Canvas uiCanvas;
@@ -17,20 +19,26 @@ public class uiManager : MonoBehaviour
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private Canvas importantDiscoveriesTab;
     [SerializeField] private Canvas photosTab;
+    [SerializeField] private Canvas tutorialCanvas;
     [SerializeField] private int pageIndex;
     [SerializeField] private string MainMenuSceneName;
+    [SerializeField]private Player playerMovement;
+    [SerializeField]private playercam playerCam;
+    [SerializeField] private globalFlock flockManagerScript;
+    [SerializeField] private GameObject fishTrapPrefab;
 
     [Header("Debug")]
     [SerializeField] private Transform trashPile;
     [SerializeField] private Player player;
     [SerializeField] private traderNPC traderNPCScript;
     [Header("stuff")]
-    public TextMeshProUGUI cashDisplay;
+    public TextMeshProUGUI[] cashDisplays;
     public cameraDetection cameraDetection;
     public static uiManager Instance;
     public float cashToBeUpdated;
     public float cashMultiplierIncrease;
     [SerializeField] private GameObject[] pages;
+    [SerializeField] private PlayableDirector finalHintTimeline;
     void Start()
     {
         Instance = this;
@@ -89,6 +97,7 @@ public class uiManager : MonoBehaviour
         }
         cameraDetection.photoDataList.Clear();
         cameraDetection.count = 0;
+        cameraDetection.AmountOfPhotosTaken = 0;
         updateCashDisplay();
     }
     public void closeTraderUI()
@@ -100,7 +109,7 @@ public class uiManager : MonoBehaviour
     }
     public void updateCashDisplay()
     {
-        if (cashDisplay != null)
+        foreach (TextMeshProUGUI cashDisplay in cashDisplays)
         {
             int playerCash = gameManager.instance.playerCash;
             cashDisplay.text = playerCash.ToString();
@@ -131,6 +140,15 @@ public class uiManager : MonoBehaviour
         {
             gameManager.instance.UpdateCash(-500);
             gameManager.instance.spawnItem(beaconPrefab, spawnPoint.position, spawnPoint.rotation);
+            updateCashDisplay();
+        }
+    }
+    public void IncreaseMaxPhotoLimit()
+    {
+        if (gameManager.instance.playerCash >= 1000)
+        {
+            gameManager.instance.UpdateCash(-500);
+            cameraDetection.cameraPhotoLimit += 5;
             updateCashDisplay();
         }
     }
@@ -205,9 +223,36 @@ public class uiManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(this.MainMenuSceneName);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
     public void SaveGame()
     {
         dataPersistanceManager.instance.SaveGame();
+    }
+    public void CloseTutorialWindow()
+    {
+        tutorialCanvas.enabled = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        playerMovement.enabled = true;
+        playerCam.enabled = true;
+        cameraDetection.enabled = true;
+    }
+    public void InstantiateFishTrap()
+    {
+        GameObject fishTrapSpawned = Instantiate(fishTrapPrefab ,spawnPoint.position, Quaternion.identity);
+        flockManagerScript.fishTraps.Add(fishTrapSpawned);
+
+    }
+    public void FinalHint()
+    {
+        if (gameManager.instance.playerCash >= 4000)
+        {
+            gameManager.instance.playerCash -= 4000;
+            finalHintTimeline.Play();
+            traderNPCScript.Hide();
+            updateCashDisplay();
+        }
     }
 }

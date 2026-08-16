@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -51,21 +52,14 @@ public class hookAscend : MonoBehaviour, IInteractable
     }
     public void CheckIfSanityEventOccurs()
     {
-        float finalChance = sanityLevelScript.baseChance * sanityLevelScript.SanityLevel;
-        finalChance = Mathf.Clamp(finalChance, 0f, 100f);
-        float rolledNumber = Random.Range(0f, 100f);
-        if (rolledNumber <= finalChance)
+        switch (gameManager.instance.NumberOfDives)
         {
-            if (gameManager.instance.NumberOfDives <= 3 && gameManager.instance.HowManyTimesHaveTheyEnteredMaskRoom >=3)
-            {
-                player.gameObject.transform.position = topPosition.position;
-                return;
-            } 
+            case 3 or 5 or 8:
             sanityLevelScript.TeleportToTrashRoom();
-        }
-        else
-        {
+            break;
+            default:
             player.gameObject.transform.position = topPosition.position;
+            break;
         }
     }
 }

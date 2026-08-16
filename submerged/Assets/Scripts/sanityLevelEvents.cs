@@ -1,5 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Cinemachine;
+using System.Collections;
+using Unity.VisualScripting;
 public enum SanityState
 {
     Stable,
@@ -19,12 +22,14 @@ public class sanityLevelEvents : MonoBehaviour
     [SerializeField] private GameObject doorPrefab;
     [SerializeField] private Transform doorSpawnPoint;
     [SerializeField] private Player player;
-    public float baseChance = 0.7f;
     [Header("Lady In Red Spawn")]
     [SerializeField] private List<Transform> spawnLocations = new List<Transform>();
     [SerializeField] private GameObject ladyInRedPrefab;
     [Header("Trash Room")]
     [SerializeField] private Transform trashPileTeleport;
+    [SerializeField] private CinemachineVirtualCamera trashRoomCamera;
+    [SerializeField] private CinemachineVirtualCamera MainCamera;
+    [SerializeField] private playercam playercam;
     public float TimeTakenForLadyInRedToDisappear = 10f;
     public float SanityLevel
     {
@@ -140,5 +145,14 @@ public class sanityLevelEvents : MonoBehaviour
     {
         player.rb.linearVelocity = Vector3.zero;
         player.rb.position = trashPileTeleport.position;
+        StartCoroutine(changeTrashRoomCameras());
+    }
+    private IEnumerator changeTrashRoomCameras()
+    {
+        timelineManager.SwitchCamera(trashRoomCamera);
+        playercam.yRotation = 180f;
+        yield return new WaitForSeconds(3f);
+        timelineManager.SwitchCamera(MainCamera);
+        
     }
 }

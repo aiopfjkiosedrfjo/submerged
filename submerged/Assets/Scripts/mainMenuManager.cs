@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public enum MenuState
 {
     TitleScreen,
@@ -13,8 +14,10 @@ public class mainMenuManager : MonoBehaviour
     [SerializeField] private Canvas optionsMenuCanvas;
     [SerializeField] private Canvas newGameMenuCanvas;
     [SerializeField] private GameObject confirmationMenu;
+    [SerializeField] private Slider slider;
     private void Start()
     {
+        dataPersistanceManager.instance.volume = slider.value;
         SetState(MenuState.TitleScreen);
     }
     public void NewGame()
@@ -54,5 +57,13 @@ public class mainMenuManager : MonoBehaviour
     public void CloseConfirmationMenu()
     {
         confirmationMenu.SetActive(false);
+    }
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+    public void MainVolume()
+    {
+        dataPersistanceManager.instance.volume = slider.value;
     }
 }

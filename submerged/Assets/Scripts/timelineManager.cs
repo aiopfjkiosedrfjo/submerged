@@ -7,7 +7,7 @@ public class timelineManager : MonoBehaviour
     static List<CinemachineVirtualCamera> cameras = new List<CinemachineVirtualCamera>();
  
     public static CinemachineVirtualCamera ActiveCamera = null;
- 
+
     public static bool IsActiveCamera(CinemachineVirtualCamera camera)
     {
         return camera == ActiveCamera;
@@ -35,5 +35,9 @@ public class timelineManager : MonoBehaviour
     public static void Unregister(CinemachineVirtualCamera camera)
     {
         cameras.Remove(camera);
+    }
+    public static void SwitchScenes()
+    {
+        uiManager.Instance.ReturnToMainMenu();
     }
 }

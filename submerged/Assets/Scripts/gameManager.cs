@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class gameManager : MonoBehaviour, IDataPersistanceInterface
 {
@@ -9,10 +10,13 @@ public class gameManager : MonoBehaviour, IDataPersistanceInterface
     public Player playerScript;
     public uiManager uiManager;
     public sanityLevelEvents sanityLevelScript;
+    [SerializeField] private cameraDetection cameraScript;
     public water waterScript;
     public int playerCash = 0;
     public int multiplierIncrease = 0;
     public int NumberOfDives = 0;
+    public bool introSequencePlayed = false;
+    [SerializeField] private PlayableDirector introSequence;
 
     public float sanityLevel = 100f;
     [Header("Mask Event")]
@@ -34,6 +38,14 @@ public class gameManager : MonoBehaviour, IDataPersistanceInterface
         }
 
         instance = this;
+    }
+    private void Start()
+    {
+        if (!introSequencePlayed)
+        {
+            introSequence.Play();
+            introSequencePlayed = true;
+        }
     }
 
     // Update is called once per frame
@@ -99,12 +111,16 @@ public class gameManager : MonoBehaviour, IDataPersistanceInterface
         playerCash = data.playerCash;
         NumberOfDives = data.NumberOfDives;
         HowManyTimesHaveTheyEnteredMaskRoom = data.HowManyTimesHaveTheyEnteredMaskRoom;
+        introSequencePlayed = data.hasIntroSequencePlayed;
+        cameraScript.cameraPhotoLimit = data.maxPhotoLimit;
     }
     public void SaveData(ref gameData data)
     {
         data.playerCash = playerCash;
         data.NumberOfDives = NumberOfDives;
         data.HowManyTimesHaveTheyEnteredMaskRoom = HowManyTimesHaveTheyEnteredMaskRoom;
+        data.hasIntroSequencePlayed = introSequencePlayed;
+        data.maxPhotoLimit = cameraScript.cameraPhotoLimit;
     }
 
 }

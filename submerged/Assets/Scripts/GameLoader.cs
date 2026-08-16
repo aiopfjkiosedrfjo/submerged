@@ -1,7 +1,10 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class GameLoader : MonoBehaviour
 {
+    [SerializeField] private AudioMixer audioMixer;
+
     private void Start()
     {
         if (dataPersistanceManager.instance == null) return;
@@ -29,4 +32,5 @@ public class GameLoader : MonoBehaviour
             }
         }
     }
+
 }

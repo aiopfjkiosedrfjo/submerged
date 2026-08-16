@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ce339c89c788e74ebfb2e6ed570821c, type: 3}
+  m_Name: FinalHint
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueSO
+  dialogueStrings:
+  - The final door way to the Red Room where the endgame is requires the player to
+    stay below 400m for approximately 60 seconds
+  - Because you need to stay for 60 Seconds you would need to grab enough oxygen
+    to withstand that time.
+  - After 60 seconds the doorway would spawn with a loud boom and all you have to
+    do is look for it
+  - The endgame is within there.
+  - To get past the fish that spawns past 300m you must quickly flash it with your
+    camera before it gets too close
+  - If not quick enough you will die and would have to go back again.

@@ -11,10 +11,12 @@ public class outOfBoundHunt : MonoBehaviour
     public float speed = 10f;
     public float rotationSpeed = 10f;
     private bool hasPlayedScreech;
+    private Player playerScript;
     void Awake()
     {
         playerObj = GameObject.FindGameObjectWithTag("Player");
         playerPos = playerObj.transform;
+        playerScript = playerObj.GetComponent<Player>();
 
     }
     void Update()
@@ -43,7 +45,10 @@ public class outOfBoundHunt : MonoBehaviour
         {
             Debug.Log("Implement Killing / Jumpscare logic");
             Destroy(gameObject);
-            //Play jumpscare and kill player
+            if (playerScript.rb.linearVelocity.magnitude > 1f)
+            {
+                playerScript.Die();
+            }
         }
     }
     public bool canChasePlayer()

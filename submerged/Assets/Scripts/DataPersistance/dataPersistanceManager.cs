@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
+using UnityEngine.Audio;
 public enum DataPersistenceState
 {
     NewGame,
@@ -8,10 +9,12 @@ public enum DataPersistenceState
 }
 public class dataPersistanceManager : MonoBehaviour
 {
+    [SerializeField] private AudioMixer audioMixer;
     [Header("File Storage Config")]
     [SerializeField] private string fileName;
 
     private gameData _gameData;
+    public float volume;
     public DataPersistenceState state;
     public static dataPersistanceManager instance { get; private set;}
     private List<IDataPersistanceInterface> dataPersistanceInterfaces;
@@ -33,6 +36,20 @@ public class dataPersistanceManager : MonoBehaviour
 
         instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+    private void Update()
+    {
+        SetMixerVolume(volume);
+    }
+    public void SetMixerVolume(float Volume)
+    {
+        if (Volume <= 0)
+        {
+            audioMixer.SetFloat("masterVolume", -80f);
+            return;
+        }
+        float decibelValue = Mathf.Log10(Volume) * 20f;
+        audioMixer.SetFloat("masterVolume", decibelValue);
     }
     public void NewGame()
     {
@@ -67,5 +84,9 @@ public class dataPersistanceManager : MonoBehaviour
     {
         IEnumerable<IDataPersistanceInterface> dataPersistanceObjects = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).OfType<IDataPersistanceInterface>();
         return new List<IDataPersistanceInterface>(dataPersistanceObjects);
+    }
+    public void Volume(float Volume)
+    {
+        
     }
 }

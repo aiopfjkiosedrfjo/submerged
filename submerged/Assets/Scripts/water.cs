@@ -42,6 +42,8 @@ public class water : MonoBehaviour, IDataPersistanceInterface
     public float depth;
     public bool HasTriggeredFadeOut = false;
     public float maxDepth = 700f;
+    [SerializeField] private bool hasPlayedOxygenWarning = false;
+    [SerializeField] private AudioClip oxygenWarning;
     [SerializeField] private UniversalRendererData rendererData;
     [SerializeField] private string featureName = "THE NAME";
     [SerializeField] private string darkFogName = "DarkFogName";
@@ -90,9 +92,15 @@ public class water : MonoBehaviour, IDataPersistanceInterface
 
                 nextAmbienceTime = Time.time + Random.Range(10f, 40f);
             }
+            if (oxygenLevel <= 20f && !hasPlayedOxygenWarning)
+            {
+                audioSourceOneShots.PlayOneShot(oxygenWarning);
+                hasPlayedOxygenWarning = true;
+            }
         }
         else
         {
+            hasPlayedOxygenWarning = false;
             if (waterFogToggle) ToggleFogShader(featureName, false);
             if (darkFogToggle) ToggleFogShader(darkFogName, true);
             ToggleFogShader(waterDistortionName, false);

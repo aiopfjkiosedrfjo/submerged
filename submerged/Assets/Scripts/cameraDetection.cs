@@ -37,6 +37,7 @@ public class cameraDetection : MonoBehaviour
     public TextMeshProUGUI photoCardInfo;
     public TextMeshProUGUI fishCountDisplay;
     public AudioClip cameraShutter;
+    [SerializeField] private AudioClip DingSFX;
     [SerializeField] private AudioClip clunkSFX;
     public AudioSource audioSource;
     public Material flashLight;
@@ -45,11 +46,13 @@ public class cameraDetection : MonoBehaviour
     private string speciesNametemp;
     private float multiplier;
     private int combo;
+    public int AmountOfPhotosTaken = 0;
 
     private int totalMultiplier;
     private bool isCameraCloseUp = false;
     private float elapsedTime = 0f;
     private bool OverheatOver = true;
+    public int cameraPhotoLimit = 5;
     private Color originalFlashLightIntensity;
     public List<GameObject> ImportantDiscoveries = new List<GameObject>();
     private static readonly int photoHash = Animator.StringToHash("photo");
@@ -101,22 +104,24 @@ public class cameraDetection : MonoBehaviour
     }
     void Update()
     {
-    if (Input.GetKeyDown(KeyCode.Mouse0) && OverheatOver)
+    if (Input.GetKeyDown(KeyCode.Mouse0) && OverheatOver && AmountOfPhotosTaken < cameraPhotoLimit)
     {
         OverheatOver = false;
         if (!isCameraCloseUp)
         {
             animator.SetTrigger(photoHash);
+            AmountOfPhotosTaken ++;
         }
         else
         {
             takePhoto();
+            AmountOfPhotosTaken ++;
             animator.SetTrigger(zoomOutHash);
             isCameraCloseUp = false;
         }
         StartCoroutine(Overheat());
     }
-    else if (Input.GetKeyDown(KeyCode.Mouse0) && !OverheatOver)
+    else if (Input.GetKeyDown(KeyCode.Mouse0) && !OverheatOver || Input.GetKeyDown(KeyCode.Mouse0) && AmountOfPhotosTaken >= cameraPhotoLimit)
     {
         audioSource.PlayOneShot(clunkSFX);
     }
@@ -148,7 +153,7 @@ public class cameraDetection : MonoBehaviour
             flashActive = false;
             flashText.text = "OFF";
         }
-        fishCountDisplay.text = $"{count}/{fishLimit} ";
+        fishCountDisplay.text = $"{AmountOfPhotosTaken}/{cameraPhotoLimit} ";
         CameraSettings();
         
     }
@@ -203,7 +208,9 @@ public class cameraDetection : MonoBehaviour
             Renderer rend = fish.GetComponentInChildren<SkinnedMeshRenderer>();
 
             if (rend == null || fish.outline == null)
+            {
                 continue;
+            }
 
             if (isInView(planes, rend))
             {
@@ -212,18 +219,9 @@ public class cameraDetection : MonoBehaviour
                 if (((1 << rend.gameObject.layer) & targetLayer) != 0)
                 {
                     CalculateStuff(rend, fish.gameObject);
-
-
-
-
-
-
-
-
-
-
-
-
+                    StartCoroutine(fish.RunAway());
+                    fish.PlayParticleEffect();
+                    StartCoroutine(PlaySFX(fishCount));
                 }
             }
             else
@@ -411,6 +409,14 @@ public class cameraDetection : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(cameraShutterPauseDuration);
         OverheatOver = true;
+    }
+    private System.Collections.IEnumerator PlaySFX(int fishCount)
+    {
+        for (int i = 0; i < fishCount; i++)
+        {
+            audioSource.PlayOneShot(DingSFX);
+            yield return new WaitForSecondsRealtime(0.5f);
+        }
     }
 
 }

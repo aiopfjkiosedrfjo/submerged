@@ -10,6 +10,7 @@ public class maskDialogue : MonoBehaviour, IInteractable
     [SerializeField]private DialogueSO dialogueSO3;
     [SerializeField]private typeWriter typeWriter;
     [SerializeField]private GameObject dialogueBox;
+    [SerializeField]private cameraDetection cameraScript;
     [Header("Masks")]
     [SerializeField] private int dialogueCount = 0;
     public bool playerPressed = false;
@@ -31,6 +32,7 @@ public class maskDialogue : MonoBehaviour, IInteractable
     }
     private void StartDialogue()
     {
+        cameraScript.enabled = false;
         playerPressed = false;
         int currentDialogue = gameManager.instance.HowManyTimesHaveTheyEnteredMaskRoom;
         DialogueSO currentDialogueSO = null;
@@ -64,6 +66,7 @@ public class maskDialogue : MonoBehaviour, IInteractable
         }
         TriggerEvent();
         Hide();
+        cameraScript.enabled = true;
     }
     public void Hide()
     {
