@@ -11,7 +11,7 @@ public class globalFlock : MonoBehaviour
     public int HORIZONTALtankSizeLevi = 200;
     public int numOfLeviathan = 2;
     public GameObject leviathanPrefab;
-    static public int numFish = 500;
+    static public int numFish = 20;
     public static GameObject[] allFish = new GameObject[numFish];
     public static Vector3 goalpos = Vector3.zero;
     public static Vector3 goalposLevi = Vector3.zero;

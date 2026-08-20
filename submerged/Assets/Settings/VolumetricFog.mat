@@ -25,7 +25,7 @@ Material:
     m_TexEnvs:
     - _FogNoise:
         m_Texture: {fileID: 11700000, guid: c6a80adabc2ee4b4bbd305edef74a3d0, type: 3}
-        m_Scale: {x: 1.21, y: 0.1}
+        m_Scale: {x: 0, y: 0.1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
@@ -42,7 +42,7 @@ Material:
     - _SurfaceHeight: -48.7
     m_Colors:
     - _BottomColor: {r: 0, g: 0, b: 0.01886791, a: 1}
-    - _Color: {r: 0.0037153987, g: 0.048237287, b: 0.21766458, a: 0}
+    - _Color: {r: 0.011379109, g: 0.09565348, b: 0.41366756, a: 0}
     - _FogBottomColor: {r: 0, g: 0, b: 0.1981132, a: 1}
     - _FogTopColor: {r: 0, g: 0.13725495, b: 1, a: 1}
     - _LightContribution: {r: 1, g: 1, b: 1, a: 1}
