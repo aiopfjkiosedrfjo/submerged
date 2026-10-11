@@ -31,21 +31,21 @@ Material:
     m_Floats:
     - _DeepHeight: -328.45
     - _Density: 0.08
-    - _DensityMultiplier: 0.03333429
+    - _DensityMultiplier: 0.136186
     - _DensityThreshold: 0.134
     - _FogHeightGradient: 1.08
     - _LightScattering: 0.054
-    - _MaxDistance: 388.6
+    - _MaxDistance: 408.03116
     - _NoiseOffset: -8.04
     - _NoiseTiling: 16.1
     - _StepSize: 20
     - _SurfaceHeight: -48.7
     m_Colors:
-    - _BottomColor: {r: 0.019607844, g: 0, b: 0, a: 1}
-    - _Color: {r: 0, g: 0, b: 0, a: 0}
+    - _BottomColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Color: {r: 0.008917374, g: 0.08042247, b: 0.35070756, a: 0}
     - _FogBottomColor: {r: 0, g: 0, b: 0.1981132, a: 1}
     - _FogTopColor: {r: 0, g: 0.13725495, b: 1, a: 1}
     - _LightContribution: {r: 1, g: 1, b: 1, a: 1}
-    - _TopColor: {r: 0.9622642, g: 0, b: 0, a: 1}
+    - _TopColor: {r: 0, g: 0, b: 0.2830189, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
